@@ -1,4 +1,4 @@
-const http = require('http'),
+const http = require('http'); http.Agent
   fs = require('fs'),
   url = require('url');
 
