@@ -1,12 +1,12 @@
-const http = require('http'); http.Agent
-  fs = require('fs'),
-  url = require('url');
+const http = require('http');
+const fs = require('fs');
+const url = require('url');
 
 http.createServer((request, response) => {
   let addr = request.url,
     q = new URL(addr, 'http://' + request.headers.host),
     filePath = '';
-
+  
   fs.appendFile('log.txt', 'URL: ' + addr + '\nTimestamp: ' + new Date() + '\n\n', (err) => {
     if (err) {
       console.log(err);
@@ -30,7 +30,7 @@ http.createServer((request, response) => {
     response.write(data);
     response.end();
 
-  });a
+  });
 
 }).listen(8080);
 
