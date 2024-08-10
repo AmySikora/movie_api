@@ -1,8 +1,38 @@
-const http = require('http');
+const express = require('express'),
+  morgan = require('morgan');
+  fs = require('fs'), // import built un node modules fs and path
+  path = require('path');
 
-http.createServer((request, response) => {
-  response.writeHead(200, {'Content-Type': 'text/plain'});
-  response.end('Welcome to my book club!\n');
-}).listen(8080);
+const app = express();
+//create a write stream in append mode
+// a 'log.txt' file is created in root directory
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
+app.use(morgan('common'));
 
-console.log('My first Node test server is running on Port 8080.');
+// setup the logger
+app.use(morgan('combined', {stream: accessLogStream}));
+
+app.get('/', (req, res) => {
+  res.send('Welcome to my app!');
+});
+
+app.get('/secreturl', (req, res) => {
+  res.send('This is a secret url with super top-secret content.');
+});
+
+const bodyParser = require('body-parser'),
+    methodOverride = require('method-overide');
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
+app.use(bodyParser.json());
+app.use(methodOverride());
+
+app.use((err, req, res, next) => {
+    //logic
+});
+
+app.listen(8080, () => {
+  console.log('Your app is listening on port 8080.');
+});
