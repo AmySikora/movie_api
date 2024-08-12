@@ -24,7 +24,7 @@ app.get('/movies', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.send('Welcome to myFlix!.');
+  res.send('Welcome to myFlix!');
 });
 
 // Serve static files
@@ -36,6 +36,7 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something went wrong!');
 });
 
-app.listen(8080, () => {
-  console.log('Your app is listening on port 8080.');
+// start server
+app.listen(port, () => {
+    console.log('Your app is running on port 8080');
 });
