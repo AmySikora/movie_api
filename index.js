@@ -24,7 +24,7 @@ app.get('/movies', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.send('Welcome to myFlix!');
+  res.send('Welcome to myFlix! Add /movies to the URL to see more info.');
 });
 
 // Serve static files
