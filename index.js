@@ -6,6 +6,9 @@ const app = express();
 // Morgan used to log requests 
 app.use(morgan('combined'));
 
+// Serve static files
+app.use(express.static('public'));
+
 // Add movie data
 app.get('/movies', (req, res) => {
     const movies = [
@@ -26,9 +29,6 @@ app.get('/movies', (req, res) => {
 app.get('/', (req, res) => {
   res.send('Welcome to myFlix! Add /movies to the URL to see more info.');
 });
-
-// Serve static files
-app.use(express.static('public'));
 
 // Create error handling middleware
 app.use((err, req, res, next) => {
