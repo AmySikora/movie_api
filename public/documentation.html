@@ -18,7 +18,7 @@
         <li>Why: Movie enthusiasts want to be able to access information about different movies, directors, and genres. The server-side of the myFlix application will ensure they have access to this information, that their requests can be processed, and that all necessary data can be stored.</li>
     </ul>
 
-    <h2>Endpoints</h2>
+    <h2>Documentation of Endpoints</h2>
     <table border="1" cellpadding="10" cellspacing="0">
         <thead>
             <tr>
@@ -34,7 +34,7 @@
                 <td>Return a list of ALL movies to the user</td>
                 <td>/movies</td>
                 <td>GET</td>
-                <td>N/A</td>
+                <td>None</td>
                 <td>
                     <code>
                         {
@@ -59,7 +59,7 @@
                 <td>Return data about a single movie by title</td>
                 <td>/movies/:title</td>
                 <td>GET</td>
-                <td>N/A</td>
+                <td>None</td>
                 <td>
                     <code>
                         {
@@ -84,7 +84,7 @@
                 <td>Return data about a genre by name/title</td>
                 <td>/movies/genre/:genreName</td>
                 <td>GET</td>
-                <td>N/A</td>
+                <td>None</td>
                 <td>
                     <code>
                         {
@@ -98,7 +98,7 @@
                 <td>Return data about a director by name</td>
                 <td>/movies/director/:directorName</td>
                 <td>GET</td>
-                <td>N/A</td>
+                <td>None</td>
                 <td>
                     <code>
                         {
@@ -125,7 +125,9 @@
                 <td>
                     <code>
                         {
-                            "message": "User Mary has been successfully registered."
+                            "name": "Mary",
+                            "favorieMovies": [],
+                            "id": "b7d96553-3f21-4c6e-9429-78574125dc8e"
                         }
                     </code>
                 </td>
@@ -133,7 +135,7 @@
             <tr>
                 <td>Allow users to update their username</td>
                 <td>/users/:id</td>
-                <td>PUT</td>
+                <td>POST</td>
                 <td>
                     <code>
                         {
@@ -143,23 +145,16 @@
                         }
                     </code>
                 </td>
-                <td>
-                    <code>
-                        {
-                            "message": "User name has been successfully updated."
-                        }
-                    </code>
-                </td>
             </tr>
             <tr>
                 <td>Allow users to add a movie to their list of favorites</td>
                 <td>/users/:id/:movieTitle</td>
                 <td>POST</td>
-                <td>N/A</td>
+                <td>None</td>
                 <td>
                     <code>
                         {
-                            "message": "Pulp Fiction has been added to user 1's favorites."
+                            "message": "Pulp Fiction has been added to user 1's array"
                         }
                     </code>
                 </td>
@@ -168,11 +163,11 @@
                 <td>Allow users to remove a movie from their list of favorites</td>
                 <td>/users/:id/:movieTitle</td>
                 <td>DELETE</td>
-                <td>N/A</td>
+                <td>None</td>
                 <td>
                     <code>
                         {
-                            "message": "The Godfather has been removed from user 2's favorites."
+                            "message": "The Godfather has been removed from user 2's array"
                         }
                     </code>
                 </td>
@@ -181,11 +176,11 @@
                 <td>Allow existing users to deregister</td>
                 <td>/users/:id</td>
                 <td>DELETE</td>
-                <td>N/A</td>
+                <td>None</td>
                 <td>
                     <code>
                         {
-                            "message": "User 2 has been deleted."
+                            "message": "user 2 has been deleted"
                         }
                     </code>
                 </td>
