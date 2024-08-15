@@ -100,10 +100,10 @@ app.get('/movies/directors/:directorName', (req, res) => {
   const { directorName } = req.params;
   const director = movies.find( movie => movie.Director.Name === directorName ).Director;
 
-  if (genre) {
-    res.status(200).json(genre);
+  if (director) {
+    res.status(200).json(director);
   } else {
-    res.status(400).send('No such genre');
+    res.status(400).send('No such director');
   }
 })
 app.get('/', (req, res) => {
