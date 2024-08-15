@@ -141,7 +141,7 @@ app.delete('/users/:id', (req, res) => {
   let user = users.find( user => user.id == id );
 
   if (user) {
-    users = user.filter( user => user.id !== id);
+    users = user.filter( user => user.id != id);
     res.json(users)
     //res.status(200).send(`user ${id} has been deleted`);;
   } else {
