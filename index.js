@@ -106,6 +106,20 @@ app.put('/users/:id', (req, res) => {
   }
 })
 
+// Update favorite movies
+app.post('/users/:id/:movieTitle', (req, res) => {
+  const { id, movieTitle } = req.params;
+  const updatedUser = req.body;
+  
+  let user = users.find( user => user.id == id );
+
+  if (user) {
+    user.favoriteMovies.push(movieTitle);
+    res.status(200).json(user); 
+  } else {
+    res.status(400).send('no such user') 
+  }
+})
 
 // READ movies
 app.get('/movies', (req, res) => {
