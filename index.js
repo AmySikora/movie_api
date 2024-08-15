@@ -18,7 +18,7 @@ let users = [
 
 ]
 // Add movies 
-    let movies = [
+let movies = [
         { 
           "Title": "The Shawshank Redemption", 
           "Description": "The Shawshank Redemption is a 1994 American prison drama film written and directed by Frank Darabont, based on the 1982 Stephen King novella Rita Hayworth and Shawshank Redemption. The film tells the story of banker Andy Dufresne (Tim Robbins), who is sentenced to life in Shawshank State Penitentiary for the murders of his wife and her lover, despite his claims of innocence. Over the following two decades, he befriends a fellow prisoner, contraband smuggler Ellis 'Red' Redding (Morgan Freeman), and becomes instrumental in a money laundering operation led by the prison warden Samuel Norton (Bob Gunton). William Sadler, Clancy Brown, Gil Bellows, and James Whitmore appear in supporting roles.",
@@ -66,10 +66,23 @@ let users = [
         },  
     ];
 
-// READ
+// READ movies
 app.get('/movies', (req, res) => {
   res.status(200).json(movies);
-});
+})
+
+// READ title
+app.get('movies/:title'), (req, res) => {
+  const { title } = req.params;
+  const movie = movies.find( movie => movie.Title === title );
+
+  if (movie) {
+    res.status(200).json(movie);
+  } else {
+    res.status(400).send('No such movie')
+  }
+  ;
+}
 
 app.get('/', (req, res) => {
   res.send('Welcome to myFlix! Add /movies to the URL to see more info.');
