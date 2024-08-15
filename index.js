@@ -95,6 +95,17 @@ app.get('/movies/genre/:genreName', (req, res) => {
     res.status(400).send('No such genre');
   }
 })
+// READ Director Name
+app.get('/movies/directors/:directorName', (req, res) => {
+  const { directorName } = req.params;
+  const director = movies.find( movie => movie.Director.Name === directorName ).Director;
+
+  if (genre) {
+    res.status(200).json(genre);
+  } else {
+    res.status(400).send('No such genre');
+  }
+})
 app.get('/', (req, res) => {
   res.send('Welcome to myFlix! Add /movies to the URL to see more info.');
 });
