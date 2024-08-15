@@ -134,7 +134,7 @@ app.delete('/users/:id/:movieTitle', (req, res) => {
   }
 })
 
-// Delete user profile
+// Delete user ID
 app.delete('/users/:id', (req, res) => {
   const { id } = req.params;
 
@@ -142,7 +142,7 @@ app.delete('/users/:id', (req, res) => {
 
   if (user) {
     users = user.filter( user => user.id != id);
-    res.status(200).send(`user ${id} has been deleted`);;
+    res.status(200).send(`user ${id} has been deleted`);
   } else {
       res.status(400).send('no such user')
   }
