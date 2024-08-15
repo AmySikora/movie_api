@@ -15,8 +15,18 @@ app.use(bodyParser.json());
 // Serve static files
 app.use(express.static('public'));
 let users = [
-
+{
+  id: 1,
+  name: "Kim",
+  favoriteMovies: []
+},
+{
+  id: 2,
+  name: "Joe",
+  favoriteMovies: ['The Godfather']
+},
 ]
+
 // Add movies 
 let movies = [
         { 
