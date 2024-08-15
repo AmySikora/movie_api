@@ -14,6 +14,7 @@ app.use(bodyParser.json());
 
 // Serve static files
 app.use(express.static('public'));
+
 let users = [
 {
   id: 1,
