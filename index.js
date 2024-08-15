@@ -106,7 +106,7 @@ app.put('/users/:id', (req, res) => {
   }
 })
 
-// Update favorite movies
+// Create favorite movies
 app.post('/users/:id/:movieTitle', (req, res) => {
   const { id, movieTitle } = req.params;
 
@@ -120,6 +120,19 @@ app.post('/users/:id/:movieTitle', (req, res) => {
   }
 })
 
+// Delete favorite movies
+app.delete('/users/:id/:movieTitle', (req, res) => {
+  const { id, movieTitle } = req.params;
+
+  let user = users.find( user => user.id == id );
+
+  if (user) {
+    user.favoriteMovies = user.favoriteMovies.filter( title !== movieTitle);
+    res.status(200).send('${movieName} has been added to user ${id}s array');;
+  } else {
+      res.status(400).send('no such user')
+  }
+})
 // READ movies
 app.get('/movies', (req, res) => {
   res.status(200).json(movies);
