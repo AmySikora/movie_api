@@ -1,19 +1,19 @@
 // Require express, Morgan, body-parser, and uuid
 const express = require('express'),
-  morgan = require('morgan');
+  //morgan = require('morgan');
   bodyParser = require('body-parser'),
   uuid = require('uuid');
 
 const app = express();
 
 // Morgan used to log requests 
-app.use(morgan('combined'));
+//app.use(morgan('combined'));
 
 // Body-Parser
 app.use(bodyParser.json());
 
 // Serve static files
-app.use(express.static('public'));
+//app.use(express.static('public'));
 let users = [
 
 ]
@@ -75,14 +75,14 @@ app.get('/movies', (req, res) => {
 // READ title
 app.get('/movies/:title', (req, res) => {
   const { title } = req.params;
-  const movie = movies.find(movie => movie.Title === title);
+  const movie = movies.find( movie => movie.Title === title );
 
   if (movie) {
     res.status(200).json(movie);
   } else {
-    res.status(400).send('No such movie');
+    res.status(400).send('no such movie');
   }
-});
+})
 
 app.get('/', (req, res) => {
   res.send('Welcome to myFlix! Add /movies to the URL to see more info.');
