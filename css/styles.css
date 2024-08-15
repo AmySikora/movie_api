@@ -1,5 +1,33 @@
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
-    padding: 
+    padding: 0;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+th {
+    background-color: #f4f4f4;
+    text-align: left;
+}
+
+code {
+    display: block;
+    white-space: pre-wrap;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
 }
