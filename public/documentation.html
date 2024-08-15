@@ -37,7 +37,7 @@ directors, and genres. The server-side of the myFlix application will ensure the
 to this information, that their requests can be processed, and that all necessary data can be
 stored. </ul>
 
-<li>Return a list of ALL movies to the user
+<li>Return a list of ALL movies to the user:
 Return data (description, genre, director, image URL, whether it is featured or not) about a single movie by title to the user
 Return data about a genre (description) by name/title (e.g., “Thriller”)
 Return data about a director (bio, birth year, death year) by name
@@ -46,5 +46,157 @@ Allow users to update their user info (username)
 Allow users to add a movie to their list of favorites (showing ony a text that a moive has been added)
 Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed)
 Allow existing users to deregister (showing only a text that a user email has been removed)</li>
+
+<p id="Intro-text1">Documentation for myFlix API:</p>
+<div>
+<h2>Endpoints</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Business Logic</th>
+      <th>URL</th>
+      <th>HTTP Method</th>
+      <th>Request Body Data Format with Examples</th>
+      <th>Response Body Data Format with Examples</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GET</td>
+      <td>/movies</td>
+      <td>Return a list of ALL movies to the user</td>
+      <td>
+        <code>
+            "Title": "The Shawshank Redemption",
+            "Description": "The Shawshank Redemption is a 1994 American prison drama film written and directed by Frank Darabont, based on the 1982 Stephen King novella Rita Hayworth and Shawshank Redemption. The film tells the story of banker Andy Dufresne (Tim Robbins), who is sentenced to life in Shawshank State Penitentiary for the murders of his wife and her lover, despite his claims of innocence. Over the following two decades, he befriends a fellow prisoner, contraband smuggler Ellis 'Red' Redding (Morgan Freeman), and becomes instrumental in a money laundering operation led by the prison warden Samuel Norton (Bob Gunton). William Sadler, Clancy Brown, Gil Bellows, and James Whitmore appear in supporting roles.",
+            "Genre": {
+                "Name": "Drama",
+                "Description": "In film and television, drama is a category or genre of narrative fiction (or semi-fiction) intended to be more serious than humorous in tone."
+            },
+            "Director": {
+                "Name": "Frank Darabont",
+                "Bio": "Frank Árpád Darabont (born Ferenc Árpád Darabont, January 28, 1959)[2] is an American screenwriter, director and producer. He has been nominated for three Academy Awards and a Golden Globe Award. In his early career, he was primarily a screenwriter for such horror films as A Nightmare on Elm Street 3: Dream Warriors (1987), The Blob (1988) and The Fly II (1989).",
+                "Birth": "January 28, 1959"
+            },
+            "ImageURL": "https://en.wikipedia.org/wiki/File:ShawshankRedemptionMoviePoster.jpg",
+            "Featured": false
+        },
+          },
+        </code>
+      </td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/movies/:title</td>
+      <td>Return json data about a single moive</td>
+      <td>
+        <code>
+            {
+                "Title": "Pulp Fiction",
+                "Description": "Pulp Fiction is a 1994 American independent crime film written and directed by Quentin Tarantino from a story he conceived with Roger Avary.[3] It tells four intertwining tales of crime and violence in Los Angeles, California. The film stars John Travolta, Samuel L. Jackson, Bruce Willis, Tim Roth, Ving Rhames, and Uma Thurman. The title refers to the pulp magazines and hardboiled crime novels popular during the mid-20th century, known for their graphic violence and punchy dialogue.",
+                "Genre": {
+                    "Name": "Crime Film",
+                    "Description": "Crime films, in the broadest sense, is a film genre inspired by and analogous to the crime fiction literary genre. Films of this genre generally involve various aspects of crime and its detection. "
+                },
+                "Director": {
+                    "Name": "Quentin Tarantino",
+                    "Bio": "Quentin Jerome Tarantino is an American filmmaker and actor. His films are characterized by stylized violence, extended dialogue often with profanity, and references to popular culture. Tarantino's work has been subject to criticism, such as the depictions of violence and frequent inclusion of racial slurs. During Tarantino's career, his films have garnered a cult following, as well as critical and commercial success; he has been considered 'the single most influential director of his generation'. He is the recipient of two Academy Awards, two BAFTA Awards, and four Golden Globe Awards.",
+                    "Birth": "March 27, 1963"
+                },
+                "ImageURL": "https://upload.wikimedia.org/wikipedia/en/3/3b/Pulp_Fiction_%281994%29_poster.jpg",
+                "Featured": false
+            }
+        </code>
+      </td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/movies/genre/:genreName</td>
+      <td>Return json movie data by genre</td>
+      <td>
+        <code>
+            {
+                "Name": "Drama",
+                "Description": "In film and television, drama is a category or genre of narrative fiction (or semi-fiction) intended to be more serious than humorous in tone."
+            }
+        </code>
+      </td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/movies/director/:directorName</td>
+      <td>Return json movie data by single director name</td>
+      <td>
+        <code>
+            {
+                "Name": "Frank Darabont",
+                "Bio": "Frank Árpád Darabont is an American screenwriter, director and producer. He has been nominated for three Academy Awards and a Golden Globe Award. In his early career, he was primarily a screenwriter for such horror films as A Nightmare on Elm Street 3: Dream Warriors (1987), The Blob (1988) and The Fly II (1989).",
+                "Birth": "January 28, 1959"
+            }
+        </code>
+      </td>
+    </tr>
+    <tr>
+      <td>POST</td>
+      <td>/users</td>
+      <td>Add a new user to user array</td>
+      <td>
+        <code>
+            {
+                "name": "Mary",
+                "favoriteMovies": [],
+                "id": "e86696bf-3cf4-43f4-ba9a-7030c35c8f94"
+            }
+        </code>
+      </td>
+    </tr>
+    <tr>
+      <td>POST</td>
+      <td>/users</td>
+      <td>Allow users to update thier username</td>
+      <td>
+        <code>
+          <code>
+            {
+                "name": "Kim Updated Name",
+                "favoriteMovies": [],
+                "id": "e857b60b-7d74-43b7-8f61-126718d0fbf0"
+            }
+          </code>
+        </code>
+      </td>
+    </tr>
+    <tr>
+      <td>POST</td>
+      <td>/users/:id/:movieTitle</td>
+      <td>Allow users to add a favorite movie and return a message</td>
+      <td>
+        <message>
+            Pulp Fiction has been added to user 1's array
+        </message>
+      </td>
+    </tr>
+    <tr>
+      <td>DELETE</td>
+      <td>/users/:id/:movieTitle</td>
+      <td>Delete a movie from the user's favorites and return a message</td>
+      <td>
+        <message> The Godfather has been removed form user 2's array </message>
+      </td>
+    </tr>
+    <tr>
+      <td>DELETE</td>
+      <td>/users/:id</td>
+      <td> Delete a user's ID and return a message</td>
+      <td>
+        <message>
+          user 2 has been deleted
+        </message>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
 </body>
 </html>
