@@ -1,10 +1,16 @@
-// Require express
+// Require express, Morgan, body-parser, and uuid
 const express = require('express'),
   morgan = require('morgan');
+  bodyParser = require('body-parser'),
+  uuid = require('uuid');
+
 const app = express();
 
 // Morgan used to log requests 
 app.use(morgan('combined'));
+
+// Body-Parser
+app.use(bodyParser.json());
 
 // Serve static files
 app.use(express.static('public'));
