@@ -73,17 +73,16 @@ app.get('/movies', (req, res) => {
 })
 
 // READ title
-app.get('/movies/:title'), (req, res) => {
+app.get('/movies/:title', (req, res) => {
   const { title } = req.params;
-  const movie = movies.find( movie => movie.Title === title );
+  const movie = movies.find(movie => movie.Title === title);
 
   if (movie) {
     res.status(200).json(movie);
   } else {
-    res.status(400).send('No such movie')
+    res.status(400).send('No such movie');
   }
-  
-}
+});
 
 app.get('/', (req, res) => {
   res.send('Welcome to myFlix! Add /movies to the URL to see more info.');
