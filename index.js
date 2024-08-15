@@ -133,6 +133,22 @@ app.delete('/users/:id/:movieTitle', (req, res) => {
       res.status(400).send('no such user')
   }
 })
+
+// Delete user profile
+app.delete('/users/:id', (req, res) => {
+  const { id } = req.params;
+
+  let user = users.find( user => user.id == id );
+
+  if (user) {
+    users = user.filter( user => user.id !== id);
+    res.json(users)
+    //res.status(200).send(`user ${id} has been deleted`);;
+  } else {
+      res.status(400).send('no such user')
+  }
+})
+
 // READ movies
 app.get('/movies', (req, res) => {
   res.status(200).json(movies);
