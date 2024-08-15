@@ -94,14 +94,14 @@ app.post('/users', (req, res) => {
 // Update User 
 app.put('/users/:id', (req, res) => {
   const { id } = req.params;
-  const updatedUser = req.body
+  const updatedUser = req.body;
   
   let user = users.find( user => user.id == id );
 
   if (user) {
     user.name = updatedUser.name;
     res.sendStatus(200).json(user); 
-  } else{
+  } else {
     res.status(400).send('no such user') 
   }
 })
