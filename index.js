@@ -5,7 +5,7 @@ const express = require('express'),
   uuid = require('uuid');
   // addeing swagger for documentation
   swaggerUI = require('swagger-ui');
-  swaggerDocument = require('./swagger.json');
+  swaggerDocument = require('./swagger.js');
 
 const app = express();
 
