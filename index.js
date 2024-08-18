@@ -4,8 +4,6 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   uuid = require('uuid');
 
-const openAPI =
-
 const app = express();
 
 // Morgan used to log requests 
