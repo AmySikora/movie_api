@@ -3,6 +3,9 @@ const express = require('express'),
   morgan = require('morgan');
   bodyParser = require('body-parser'),
   uuid = require('uuid');
+  // addeing swagger for documentation
+  swaggerUI = require('swagger-ui');
+  swaggerDocument = require('./swagger.json');
 
 const app = express();
 
