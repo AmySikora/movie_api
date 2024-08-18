@@ -4,8 +4,8 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   uuid = require('uuid');
   // addeing swagger for documentation
-  swaggerUI = require('swagger-ui');
-  swaggerDocument = require('./swagger.js');
+  swaggerUI = require('swagger-ui-express');
+  swaggerJsdoc = require('swagger-jsdoc');
 
 const app = express();
 
@@ -17,6 +17,9 @@ app.use(bodyParser.json());
 
 // Serve static files
 app.use(express.static('public'));
+
+// Server Swagger
+app.use('api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 let users = [
 {
