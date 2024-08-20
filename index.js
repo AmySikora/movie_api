@@ -3,9 +3,11 @@ const express = require('express'),
   morgan = require('morgan');
   bodyParser = require('body-parser'),
   uuid = require('uuid');
-  // addeing swagger for documentation
-  swaggerUI = require('swagger-ui-express');
-  swaggerJsdoc = require('swagger-jsdoc');
+
+  // adding swagger for documentation
+const swaggerUI = require('swagger-ui-express');
+const swaggerJsdoc = require('swagger-jsdoc');
+const path = require ('path');
 
 const app = express();
 
@@ -17,6 +19,7 @@ app.use(bodyParser.json());
 
 // Serve static files
 app.use(express.static('public'));
+
 
 // Server Swagger
 app.use('api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
