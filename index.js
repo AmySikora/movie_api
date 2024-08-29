@@ -15,6 +15,8 @@ const express = require('express'),
   uuid = require('uuid');
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true })); 
 
 // Morgan used to log requests 
 app.use(morgan('combined'));
