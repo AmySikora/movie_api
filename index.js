@@ -14,11 +14,6 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   uuid = require('uuid');
 
-  // adding swagger for documentation
-const swaggerUI = require('swagger-ui-express');
-const swaggerJsdoc = require('swagger-jsdoc');
-const path = require ('path');
-
 const app = express();
 
 // Morgan used to log requests 
