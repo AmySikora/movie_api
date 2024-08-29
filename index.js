@@ -166,6 +166,28 @@ app.put('/users/:id', (req, res) => {
   }
 })
 
+// Update user in Mongoose
+app.put('/users/:Username', async (req, res) => {
+  await Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
+    {
+      Username: req.body.Username,
+      Password: req.body.Password,
+      Email: req.body.Email,
+      Birthday: req.body.Birthday
+    }
+}, 
+
+{ new: true }) // This line makes sure that the updated document is returned
+.then((updatedUser) => {
+  res.json(updatedUser);
+})
+.catch((err) => {
+  console.err(err);
+  res.status(500).send( 'Error: ' + err);
+})
+
+});
+
 // Create favorite movies
 app.post('/users/:id/:movieTitle', (req, res) => {
   const { id, movieTitle } = req.params;
