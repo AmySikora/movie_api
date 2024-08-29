@@ -95,7 +95,7 @@ app.post('/users', async (req, res) => {
   await Users.findOne({ Username: req.body.Username })
     .then((user) => {
       if (user) {
-        return res.Status(400).send(req.bodyUsername + 'already exisits');
+        return res.Status(400).send(req.body.Username + 'already exisits');
       } else {
         Users.create({
           Username: req.body.Username,
