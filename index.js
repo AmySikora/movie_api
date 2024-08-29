@@ -17,19 +17,14 @@ const express = require('express'),
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); 
+// Serve static files
+app.use(express.static('public'));
 
 // Morgan used to log requests 
 app.use(morgan('combined'));
 
 // Body-Parser
 app.use(bodyParser.json());
-
-// Serve static files
-app.use(express.static('public'));
-
-
-// Server Swagger
-app.use('api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 let users = [
 {
