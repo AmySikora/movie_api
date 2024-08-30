@@ -90,30 +90,30 @@ let movies = [
     ];
 
 // Create users
-
 app.post('/users', async (req, res) => {
   await Users.findOne({ Username: req.body.Username })
     .then((user) => {
       if (user) {
-        return res.Status(400).send(req.body.Username + 'already exisits');
+        return res.status(400).send(req.body.Username + 'already exists');
       } else {
-        Users.create({
-          Username: req.body.Username,
-          Password: req.body.Password,
-          Email: req.body. Email,
-          Birthday: req.body.Birthday
-        })
-        .then((user) =>{res.status(201).json(user) })
+        Users
+          .create({
+            Username: req.body.Username,
+            Password: req.body.Password,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday
+          })
+          .then((user) =>{res.status(201).json(user) })
         .catch((error) => {
           console.error(error);
           res.status(500).send('Error: ' + error);
-        });
+        })
       }
     })
-      .catch((error) => {
-        console.error(error);
-        res.status(500).send('Error:' + error);
-      });
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
 });
 
 app.post('/users', (req, res) => {
@@ -136,7 +136,7 @@ app.get('/users', async (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).send('Error: ' + err); 
+      res.status(500).send('Error: ' + err);
     });
 });
 
@@ -151,6 +151,7 @@ app.get('/users/:Username', async (req, res) => {
       res.status(500).send('Error: ' + err);
     });
 });
+
 // Update User 
 app.put('/users/:id', (req, res) => {
   const { id } = req.params;
@@ -175,20 +176,18 @@ app.put('/users/:Username', async (req, res) => {
       Email: req.body.Email,
       Birthday: req.body.Birthday
     }
-}, 
-
-{ new: true }) // This line makes sure that the updated document is returned
-.then((updatedUser) => {
-  res.json(updatedUser);
-})
-.catch((err) => {
-  console.error(err);
-  res.status(500).send( 'Error: ' + err);
-})
-
+  },
+  { new: true }) // This line makes sure that the updated document is returned
+  .then((updatedUser) => {
+    res.json(updatedUser);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send( 'Error: ' + err);
+  })
 });
 
-// Add a moive to a user's list of favorites
+// Add a moive to a user's list of favorites in Mongoose 
 app.post('/users/:Username/movies/:MovieID', async (req, res) => {
   await Users.findOneAndUpdate({ Username: req.params.Username }, {
      $push: { FavoriteMovies: req.params.MovieID }
@@ -200,6 +199,22 @@ app.post('/users/:Username/movies/:MovieID', async (req, res) => {
   .catch((err) => {
     console.error(err);
     res.status(500).send( 'Error: ' + err);
+  });
+});
+
+// Delete a user by username
+app.delete('/users/:Username', async (req, res) => {
+  await Users.findOneAndRemove({ Username: req.params.Username })
+  .then((user) => {
+    if (!user) {
+      res.status(400).send(req.params.Username + ' was not found');
+    } else {
+      res.status(200).send(req.params.Username + ' was deleted.');
+    }
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
   });
 });
 
