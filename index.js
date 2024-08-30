@@ -12,10 +12,10 @@ mongoose.connect('mongodb://localhost:27017/moviesDB');
 // useNewUrlParser: true, useUnifiedTopology: true });
 
 // Require express, Morgan, body-parser, and uuid
-const express = require('express'),
-  morgan = require('morgan');
-  bodyParser = require('body-parser'),
-  uuid = require('uuid');
+const express = require('express');
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
+const uuid = require('uuid');
 
 const app = express();
 app.use(express.json());
@@ -28,7 +28,7 @@ app.use(morgan('combined'));
 
 // Body-Parser
 app.use(bodyParser.json());
-
+/*
 let users = [
 {
   id: 1,
@@ -42,7 +42,7 @@ let users = [
 },
 ]
 
-// Add movies 
+/** 
 let movies = [
         { 
           "Title": "The Shawshank Redemption", 
@@ -91,8 +91,10 @@ let movies = [
           "Featured": false
         },  
     ];
+    */
 
-// Create users
+// CREATE
+// Create a user 
 app.post('/users', async (req, res) => {
   await Users.findOne({ Username: req.body.Username })
     .then((user) => {
@@ -131,16 +133,39 @@ app.post('/users', (req, res) => {
 
 })
 
-// Get all users
-app.get('/users', async (req, res) => {
-  await Users.find()
-    .then((users) => {
-      res.status(201).json(users);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    });
+// Add a moive to a user's list of favorites in Mongoose 
+app.post('/users/:Username/movies/:MovieID', async (req, res) => {
+  await Users.findOneAndUpdate({ Username: req.params.Username }, {
+     $push: { FavoriteMovies: req.params.MovieID }
+   },
+   { new: true }) // This line makes sure that the updated document is returned
+  .then((updatedUser) => {
+    res.json(updatedUser);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send( 'Error: ' + err);
+  });
+});
+
+// Create favorite movies
+app.post('/users/:id/:movieTitle', (req, res) => {
+  const { id, movieTitle } = req.params;
+
+  let user = users.find( user => user.id == id );
+
+  if (user) {
+    user.favoriteMovies.push(movieTitle);
+    res.status(200).send(`${movieTitle} has been added to user ${id}'s array`);;
+  } else {
+      res.status(400).send('no such user')
+  }
+});
+
+// READ
+
+app.get('/', (req, res) => {
+  res.send('Welcome to myFlix! Add /movies to the URL to see more info.');
 });
 
 // Get a User by name
@@ -155,20 +180,82 @@ app.get('/users/:Username', async (req, res) => {
     });
 });
 
-// Update User 
-app.put('/users/:id', (req, res) => {
-  const { id } = req.params;
-  const updatedUser = req.body;
-  
-  let user = users.find( user => user.id == id );
+// Get all users
+app.get('/users', async (req, res) => {
+  await Users.find()
+    .then((users) => {
+      res.status(201).json(users);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
 
-  if (user) {
-    user.name = updatedUser.name;
-    res.status(200).json(user); 
+// READ Movies
+app.get('/movies', async (req, res) => {
+  await Moives.find()
+  .then((movies) => {
+    res.status(200).json(movies);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  });
+});
+
+// READ Title
+app.get('/movies/:title', async (req, res) => {
+  const title  = req.params.title;
+  const movie = await movies.findOne({ Title: title });
+
+  if (movie) {
+    res.status(200).json(movie);
   } else {
-    res.status(400).send('no such user') 
+    res.status(400).send('No such movie');
   }
-})
+});
+
+// READ Genre
+app.get('/movies/genre/:genreName', async (req, res) => {
+  const genreName = req.params.genreName;
+  const movie = await Movies.findOne({ 'Genre.Name': genreName});
+
+  if (movie) {
+    res.status(200).json(movie.Genre);
+  } else {
+    res.status(400).send('No such genre');
+  }
+});
+
+// READ Director Name
+app.get('/movies/directors/:directorName', async (req, res) => {
+  const directorName = req.params.directorName;
+  const movie = await Movies.findOne({ 'Director.Name': directorName });
+
+  if (movie) {
+      res.status(200).json(movie.Director);
+  } else {
+      res.status(404).send('No such director');
+  }
+});
+
+// UPDATE 
+
+// Update user's favorite movies in Mongoose
+app.post('/users/:Username/movies/:MovieID', async (req, res) => {
+  await Users.findOneAndUpdate({ Username: req.params.Username }, {
+     $push: { FavoriteMovies: req.params.MovieID }
+   },
+   { new: true }) 
+  .then((updatedUser) => {
+    res.json(updatedUser);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send( 'Error:' + err);
+  });
+});
 
 // Update user in Mongoose
 app.put('/users/:Username', async (req, res) => {
@@ -190,20 +277,6 @@ app.put('/users/:Username', async (req, res) => {
   })
 });
 
-// Add a moive to a user's list of favorites in Mongoose 
-app.post('/users/:Username/movies/:MovieID', async (req, res) => {
-  await Users.findOneAndUpdate({ Username: req.params.Username }, {
-     $push: { FavoriteMovies: req.params.MovieID }
-   },
-   { new: true }) // This line makes sure that the updated document is returned
-  .then((updatedUser) => {
-    res.json(updatedUser);
-  })
-  .catch((err) => {
-    console.error(err);
-    res.status(500).send( 'Error: ' + err);
-  });
-});
 
 // Delete a user by username
 app.delete('/users/:Username', async (req, res) => {
@@ -221,89 +294,18 @@ app.delete('/users/:Username', async (req, res) => {
   });
 });
 
-// Create favorite movies
-app.post('/users/:id/:movieTitle', (req, res) => {
-  const { id, movieTitle } = req.params;
-
-  let user = users.find( user => user.id == id );
-
-  if (user) {
-    user.favoriteMovies.push(movieTitle);
-    res.status(200).send(`${movieTitle} has been added to user ${id}'s array`);;
-  } else {
-      res.status(400).send('no such user')
-  }
-})
-
 // Delete favorite movie
-app.delete('/users/:id/:movieTitle', (req, res) => {
-  const { id, movieTitle } = req.params;
-
-  let user = users.find( user => user.id == id );
-
-  if (user) {
-    user.favoriteMovies = user.favoriteMovies.filter( title => title !== movieTitle);
-    res.status(200).send(`${movieTitle} has been removed from user ${id}'s array`);;
-  } else {
-      res.status(400).send('no such user')
-  }
-})
-
-// Delete user ID
-app.delete('/users/:id', (req, res) => {
-  const { id } = req.params;
-
-  let user = users.find( user => user.id == id );
-
-  if (user) {
-    users = users.filter( user => user.id != id);
-    res.status(200).send(`user ${id} has been deleted`);
-  } else {
-      res.status(400).send('no such user')
-  }
-})
-
-// READ movies
-app.get('/movies', (req, res) => {
-  res.status(200).json(movies);
-})
-
-// READ title
-app.get('/movies/:title', (req, res) => {
-  const { title } = req.params;
-  const movie = movies.find( movie => movie.Title === title );
-
-  if (movie) {
-    res.status(200).json(movie);
-  } else {
-    res.status(400).send('No such movie');
-  }
-})
-
-// READ Genre
-app.get('/movies/genre/:genreName', (req, res) => {
-  const { genreName } = req.params;
-  const genre = movies.find( movie => movie.Genre.Name === genreName ).Genre;
-
-  if (genre) {
-    res.status(200).json(genre);
-  } else {
-    res.status(400).send('No such genre');
-  }
-})
-// READ Director Name
-app.get('/movies/directors/:directorName', (req, res) => {
-  const { directorName } = req.params;
-  const director = movies.find( movie => movie.Director.Name === directorName ).Director;
-
-  if (director) {
-    res.status(200).json(director);
-  } else {
-    res.status(400).send('No such director');
-  }
-})
-app.get('/', (req, res) => {
-  res.send('Welcome to myFlix! Add /movies to the URL to see more info.');
+app.delete('/users/:username/:MovieID', async  (req, res) => { 
+  await Users.findOneAndUpdate({ Username: req.params.username }, {
+      $pull: { FavoriteMovies: req.params.MovieID}},
+      { new: true })
+      .then((updatedUser) => {
+          res.status(200).json(updatedUser)
+      })
+      .catch((error) => {
+          console.error(error);
+          res.status(500).send('Error: ' + error);
+      });
 });
 
 // Create error handling middleware
