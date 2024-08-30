@@ -8,7 +8,7 @@ const Genres = Models.Genre;
 const Directors = Models.Director;
 
 // mongoose connect
-mongoose.connect('mongodb://localhost:27017/myFlixDB)'); 
+mongoose.connect('mongodb://localhost:27017/moviesDB'); 
 // useNewUrlParser: true, useUnifiedTopology: true });
 
 // Require express, Morgan, body-parser, and uuid
