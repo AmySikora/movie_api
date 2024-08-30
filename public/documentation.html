@@ -106,22 +106,26 @@
             <tr>
                 <td>Allow new users to register</td>
                 <td>/users</td>
-                <td>POST</td>
+                <td>Post</td>
                 <td>
                     <code>
                         {
-                            "name": "Mary",
-                            "favoriteMovies": [],
-                            "id": "e86696bf-3cf4-43f4-ba9a-7030c35c8f94"
+                            "Username": "Care Baer,
+                            "Password": "myPW123!",
+                            "Email": "carebearsunshine@mail.com",
+                            "Birthday": "1990-01-12"
                         }
                     </code>
                 </td>
                 <td>
                     <code>
                         {
-                            "name": "Mary",
+                            _id: "66c8ef5565afdbe0a51488f0",
+                            "Username": "Care Baer,
+                            "Password": "myPW123!",
+                            "Email": "carebearsunshine@mail.com",
+                            "Birthday": "1990-01-12"
                             "favoriteMovies": [],
-                            "id": "b7d96553-3f21-4c6e-9429-78574125dc8e"
                         }
                     </code>
                 </td>
@@ -129,20 +133,26 @@
             <tr>
                 <td>Allow users to update their username</td>
                 <td>/users/:id</td>
-                <td>POST</td>
+                <td>PUT</td>
                 <td>
                     <code>
                         {
-                            "name": "Kim Updated Name",
-                            "favoriteMovies": [],
-                            "id": "e857b60b-7d74-43b7-8f61-126718d0fbf0"
+                            "Username": "newName",
+                            "Password": "newPassword",
+                            "Email": "newemail@something.com"
+                            "Birthday": "1999-05-30"
                         }
                     </code>
                 </td>
                 <td>
                     <code>
                         {
-                            "message": "None"
+                        _id: "66c8ef5565afdbe0a51488f0",
+                            "Username": "newName,
+                            "Password": "myPW123!",
+                            "Email": "carebearsunshine@mail.com",
+                            "Birthday": "1990-01-12"
+                            "favoriteMovies": [],
                         }
                     </code>
                 </td>
@@ -155,7 +165,9 @@
                 <td>
                     <code>
                         {
-                            "message": "Pulp Fiction has been added to user 1's array"
+                            "_id"66c8e06065afdbe0a51488e6"'
+                            "Username": "newName"
+                            "FavoriteMovies": ["66c8e06065afdbe0a51488e6"]
                         }
                     </code>
                 </td>
@@ -168,7 +180,9 @@
                 <td>
                     <code>
                         {
-                            "message": "The Godfather has been removed from user 2's array"
+                            "_id"66c8e06065afdbe0a51488e6"'
+                            "Username": "newName"
+                            "FavoriteMovies": []
                         }
                     </code>
                 </td>
@@ -181,7 +195,7 @@
                 <td>
                     <code>
                         {
-                            "message": "user 2 has been deleted"
+                            "message": "newUser has been deleted"
                         }
                     </code>
                 </td>
