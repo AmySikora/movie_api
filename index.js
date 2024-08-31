@@ -307,20 +307,23 @@ app.delete('/users/:Username', async (req, res) => {
 
 // Delete favorite movie
 app.delete('/users/:Username/:MovieID', async (req, res) => {
-  await Users.findOneAndUpdate(
-    { Username: req.params.Username },
-    { $pull: { FavoriteMovies: req.params.MovieID } },
-    { new: true }
-  )
-  .then((updatedUser) => {
-    res.status(200).json(updatedUser)
-})
-.catch((error) => {
+  try {
+    const updatedUser = await Users.findOneAndUpdate(
+      { Username: req.params.Username },
+      { $pull: { FavoriteMovies: req.params.MovieID } },
+      { new: true }
+    );
+
+    if (updatedUser) {
+      res.status(200).json(updatedUser);
+    } else {
+      res.status(404).send('User not found');
+    }
+  } catch (error) {
     console.error(error);
     res.status(500).send('Error: ' + error);
+  }
 });
-});
-
 
 // Create error handling middleware
 app.use((err, req, res, next) => {
