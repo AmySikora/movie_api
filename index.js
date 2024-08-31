@@ -210,48 +210,43 @@ app.get('/movies', async (req, res) => {
 
 // READ Title
 app.get('/movies/:title', async (req, res) => {
-  const title = req.params.title;
-  try {
-    const movie = await Movies.findOne({ Title: title });
-    if (movie) {
-      res.status(200).json(movie);
-    } else {
-      res.status(404).send('Movie not found');
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Error: ' + error);
+  const title  = req.params.title;
+  const movie = await movies.findOne({ Title: title });
+
+  if (movie) {
+    res.status(200).json(movie);
+  } else {
+    res.status(400).send('No such movie');
   }
 });
 
-
 // READ Genre
-app.get('/movies/genre/:genreName', async (req, res) => {
-  const genreName = req.params.genreName;
-  const movie = await Movies.findOne({ 'Genre.Name': genreName});
+app.get('/movies/:title', async (req, res) => {
+  const title = req.params.title;
+  const movie = await Movies.findOne({ Title: title });
 
   if (movie) {
-    res.status(200).json(movie.Genre);
+      res.status(200).json(movie);
   } else {
-    res.status(400).send('No such genre');
+      res.status(404).send('Movie was not found');
   }
 });
 
 // READ Director Name
-app.get('/movies/directors/:directorName', (req, res) => {
-  const { directorName } = req.params;
+app.get('/movies/directors/:directorName',  async (req, res) => {
+  try {
+      const directorName = req.params.directorName;
+      const movie = await Movies.findOne({ 'Director.Name': directorName });
 
-  Movies.findOne({ 'Director.Name': directorName })
-    .then((movie) => {
       if (movie) {
-        res.status(200).json(movie.Director);
+          res.status(200).json(movie.Director);
       } else {
-        res.status(404).send('No such director');
+          res.status(404).send('No such director');
       }
-    })
-    .catch((err) => {
+  } catch (err) {
+      console.error(err);
       res.status(500).send('Error: ' + err);
-    });
+  }
 });
 
 
