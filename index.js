@@ -28,7 +28,7 @@ app.use(morgan('combined'));
 
 // Body-Parser
 app.use(bodyParser.json());
-/*
+
 let users = [
 {
   id: 1,
@@ -42,7 +42,7 @@ let users = [
 },
 ]
 
-/** 
+// Add movies
 let movies = [
         { 
           "Title": "The Shawshank Redemption", 
@@ -91,7 +91,7 @@ let movies = [
           "Featured": false
         },  
     ];
-    */
+
 
 // CREATE
 // Create a user 
@@ -229,15 +229,18 @@ app.get('/movies/genre/:genreName', async (req, res) => {
 });
 
 // READ Director Name
-app.get('/movies/directors/:directorName', async (req, res) => {
-  const directorName = req.params.directorName;
-  const movie = await Movies.findOne({ 'Director.Name': directorName });
-
-  if (movie) {
-      res.status(200).json(movie.Director);
-  } else {
-      res.status(404).send('No such director');
-  }
+app.get('/movies/directors/:directorName', (req, res) => {
+  Movies.findOne({ 'Director.Name': req.params.directorName })
+        .then((movie) => {
+            if (movie) {
+                res.status(200).json(movie.Director);
+            } else {
+                res.status(404).send('Director not found');
+            }
+        })
+        .catch((err) => {
+            res.status(500).send('Error: ' + err);
+        });
 });
 
 // UPDATE 
@@ -257,7 +260,7 @@ app.post('/users/:Username/movies/:MovieID', async (req, res) => {
   });
 });
 
-// Update user in Mongoose
+// Update username for a user in Mongoose
 app.put('/users/:Username', async (req, res) => {
   await Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
     {
