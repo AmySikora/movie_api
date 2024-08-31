@@ -8,8 +8,10 @@ const Genres = Models.Genre;
 const Directors = Models.Director;
 
 // mongoose connect
-mongoose.connect('mongodb://localhost:27017/moviesDB'); 
-// useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost:27017/moviesDB', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 // Require express, Morgan, body-parser, and uuid
 const express = require('express');
@@ -29,7 +31,8 @@ app.use(morgan('combined'));
 // Body-Parser
 app.use(bodyParser.json());
 
-let users = [
+// In-memory data
+/*let users = [
 {
   id: 1,
   name: "Kim",
@@ -91,7 +94,7 @@ let movies = [
           "Featured": false
         },  
     ];
-
+*/
 
 // CREATE
 // Create a user 
@@ -121,7 +124,7 @@ app.post('/users', async (req, res) => {
     });
 });
 
-app.post('/users', (req, res) => {
+/*app.post('/users', (req, res) => {
   const newUser = req.body;
   if (newUser.name) {
     newUser.id = uuid.v4();
@@ -132,6 +135,7 @@ app.post('/users', (req, res) => {
   }
 
 })
+*/
 
 // Add a moive to a user's list of favorites in Mongoose 
 app.post('/users/:Username/movies/:MovieID', async (req, res) => {
@@ -149,7 +153,7 @@ app.post('/users/:Username/movies/:MovieID', async (req, res) => {
 });
 
 // Create favorite movies
-app.post('/users/:id/:movieTitle', (req, res) => {
+/*app.post('/users/:id/:movieTitle', (req, res) => {
   const { id, movieTitle } = req.params;
 
   let user = users.find( user => user.id == id );
@@ -161,11 +165,12 @@ app.post('/users/:id/:movieTitle', (req, res) => {
       res.status(400).send('no such user')
   }
 });
+*/
 
 // READ
 
 app.get('/', (req, res) => {
-  res.send('Welcome to myFlix! Add /movies to the URL to see more info.');
+  res.send('Welcome to myFlix!');
 });
 
 // Get a User by name
@@ -245,11 +250,6 @@ app.get('/movies/directors/:directorName', (req, res) => {
     });
 });
 
-// Test connection
-
-app.get('/', (req, res) => {
-  res.send('Welcome to myFlix! Add /movies to the URL to see more info.');
-});
 
 // UPDATE 
 
