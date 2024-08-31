@@ -211,14 +211,17 @@ app.get('/movies', async (req, res) => {
 // READ Title
 app.get('/movies/:title', async (req, res) => {
   const title = req.params.title;
-  const movie = await Movies.findOne({ Title: title });
-
-  if (movie) {
+  try {
+    const movie = await Movies.findOne({ Title: title });
+    if (movie) {
       res.status(200).json(movie);
-  } else {
+    } else {
       res.status(404).send('Movie not found');
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error: ' + error);
   }
-
 });
 
 
