@@ -307,17 +307,23 @@ app.delete('/users/:Username', async (req, res) => {
 });
 
 // Delete favorite movie
-app.delete('/users/:Username/movies/:MovieID', async  (req, res) => { 
-  await Users.findOneAndUpdate({ Username: req.params.username }, {
-      $pull: { FavoriteMovies: req.params.MovieID}},
-      { new: true })
-      .then((updatedUser) => {
-          res.status(200).json(updatedUser)
-      })
-      .catch((error) => {
-          console.error(error);
-          res.status(500).send('Error: ' + error);
-      });
+app.delete('/users/:Username/movies/:MovieID', async (req, res) => {
+  await Users.findOneAndUpdate(
+    { Username: req.params.Username },
+    { $pull: { FavoriteMovies: req.params.MovieID } },
+    { new: true }
+  )
+  .then((user) => {
+    if (!user) {
+      res.status(400).send(req.params.Username + ' was not found');
+    } else {
+      res.status(200).send('Movie was removed from ' + req.params.Username + '\'s favorite movies.');
+    }
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  });
 });
 
 // Create error handling middleware
