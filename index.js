@@ -270,30 +270,25 @@ app.post('/users/:Username/movies/:MovieID', async (req, res) => {
 
 // Update username for a user in Mongoose
 app.put('/users/:Username', async (req, res) => {
-  try {
-    const updatedUser = await Users.findOneAndUpdate(
-      { Username: req.params.Username }, 
-      {
-        $set: {
-          Username: req.body.Username,
-          Password: req.body.Password,
-          Email: req.body.Email,
-          Birthday: req.body.Birthday
-        }
-      },
-      { new: true } // This option returns the updated document
-    );
-
-    if (!updatedUser) {
-      res.status(404).send('No such user exists');
-    } else {
-      res.json(updatedUser);
+  await Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
+    {
+      Username: req.body.Username,
+      Password: req.body.Password,
+      Email: req.body.Email,
+      Birthday: req.body.Birthday
     }
-  } catch (err) {
+  },
+  { new: true }) // This line makes sure that the updated document is returned
+  .then((updatedUser) => {
+    res.json(updatedUser);
+  })
+  .catch((err) => {
     console.error(err);
-    res.status(500).send('Error: ' + err);
-  }
+    res.status(500).send('Error' + err);
+  })
+
 });
+
 
 // Delete a user by username
 app.delete('/users/:Username', async (req, res) => {
