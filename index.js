@@ -230,17 +230,25 @@ app.get('/movies/genre/:genreName', async (req, res) => {
 
 // READ Director Name
 app.get('/movies/directors/:directorName', (req, res) => {
-  Movies.findOne({ 'Director.Name': req.params.directorName })
-        .then((movie) => {
-            if (movie) {
-                res.status(200).json(movie.Director);
-            } else {
-                res.status(404).send('Director not found');
-            }
-        })
-        .catch((err) => {
-            res.status(500).send('Error: ' + err);
-        });
+  const { directorName } = req.params;
+
+  Movies.findOne({ 'Director.Name': directorName })
+    .then((movie) => {
+      if (movie) {
+        res.status(200).json(movie.Director);
+      } else {
+        res.status(404).send('No such director');
+      }
+    })
+    .catch((err) => {
+      res.status(500).send('Error: ' + err);
+    });
+});
+
+// Test connection
+
+app.get('/', (req, res) => {
+  res.send('Welcome to myFlix! Add /movies to the URL to see more info.');
 });
 
 // UPDATE 
