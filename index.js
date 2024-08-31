@@ -307,7 +307,7 @@ app.delete('/users/:Username', async (req, res) => {
 });
 
 // Delete favorite movie
-app.delete('/users/:username/:MovieID', async  (req, res) => { 
+app.delete('/users/:Username/movies/:MovieID', async  (req, res) => { 
   await Users.findOneAndUpdate({ Username: req.params.username }, {
       $pull: { FavoriteMovies: req.params.MovieID}},
       { new: true })
