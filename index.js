@@ -8,10 +8,9 @@ const Genres = Models.Genre;
 const Directors = Models.Director;
 
 // mongoose connect
-mongoose.connect('mongodb://localhost:27017/moviesDB', {
+mongoose.connect('mongodb://localhost:27017/moviesDB')
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
-});
 
 // Require express, Morgan, body-parser, and uuid
 const express = require('express');
@@ -211,15 +210,17 @@ app.get('/movies', async (req, res) => {
 
 // READ Title
 app.get('/movies/:title', async (req, res) => {
-  const title  = req.params.title;
-  const movie = await movies.findOne({ Title: title });
+  const title = req.params.title;
+  const movie = await Movies.findOne({ Title: title });
 
   if (movie) {
-    res.status(200).json(movie);
+      res.status(200).json(movie);
   } else {
-    res.status(400).send('No such movie');
+      res.status(404).send('Movie not found');
   }
+
 });
+
 
 // READ Genre
 app.get('/movies/genre/:genreName', async (req, res) => {
