@@ -194,7 +194,7 @@ app.get('/users', async (req, res) => {
 
 // READ Movies
 app.get('/movies', async (req, res) => {
-  await Moives.find()
+  await Movies.find()
   .then((movies) => {
     res.status(200).json(movies);
   })
