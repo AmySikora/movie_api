@@ -263,7 +263,7 @@ app.post('/users/:Username/movies/:MovieID', async (req, res) => {
 
 // Update username for a user in Mongoose
 app.put('/users/:Username', async (req, res) => {
-  await Users.findOneAndUpdate({ Username: req.params.username}, 
+  await Users.findOneAndDelete({ Username: req.params.username}, 
     { $set: {
         Username: req.body.Username,
         Password: req.body.Password,
@@ -303,7 +303,7 @@ app.delete('/users/:Username/movies/:MovieID', async (req, res) => {
   await Users.findOneAndUpdate({ Username: req.params.Username }, {
       $pull: { FavoriteMovies: req.params.MovieID }
   },
-      { new: true }) // This line makes sure that the updated document is returned
+      { new: true }) 
       .then((updatedUser) => {
           res.json(updatedUser);
       })
