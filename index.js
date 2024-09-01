@@ -211,7 +211,7 @@ app.get('/movies', async (req, res) => {
 // READ Title
 app.get('/movies/:title', async (req, res) => {
   const title  = req.params.title;
-  const movie = await movies.findOne({ Title: title });
+  const movie = await Movies.findOne({ Title: title });
 
   if (movie) {
     res.status(200).json(movie);
@@ -234,21 +234,15 @@ app.get('/movies/:title', async (req, res) => {
 
 // READ Director Name
 app.get('/movies/directors/:directorName',  async (req, res) => {
-  try {
       const directorName = req.params.directorName;
-      const movie = await Movies.findOne({ 'Director.Name': directorName });
+      const movie = await Movies.findOne({ directorName: directorName });
 
       if (movie) {
           res.status(200).json(movie.Director);
       } else {
-          res.status(404).send('No such director');
+          res.status(404).send('Director not found');
       }
-  } catch (err) {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-  }
 });
-
 
 // UPDATE 
 
@@ -305,23 +299,18 @@ app.delete('/users/:Username', async (req, res) => {
 });
 
 // Delete favorite movie
-app.delete('/users/:Username/:MovieID', async (req, res) => {
-  try {
-    const updatedUser = await Users.findOneAndUpdate(
-      { Username: req.params.Username },
-      { $pull: { FavoriteMovies: req.params.MovieID } },
-      { new: true }
-    );
-
-    if (updatedUser) {
-      res.status(200).json(updatedUser);
-    } else {
-      res.status(404).send('User not found');
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Error: ' + error);
-  }
+app.delete('/users/:Username/movies/:MovieID', async (req, res) => {
+  await Users.findOneAndUpdate({ Username: req.params.Username }, {
+      $pull: { FavoriteMovies: req.params.MovieID }
+  },
+      { new: true }) // This line makes sure that the updated document is returned
+      .then((updatedUser) => {
+          res.json(updatedUser);
+      })
+      .catch((err) => {
+          console.error(err);
+          res.status(500).send('Error: ' + err);
+      });
 });
 
 // Create error handling middleware
