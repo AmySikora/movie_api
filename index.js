@@ -28,7 +28,7 @@ app.use(express.static('public'));
 app.use(morgan('combined'));
 
 // Body-Parser
-app.use(bodyParser.json());
+//app.use(bodyParser.json());
 
 // In-memory data
 /*let users = [
@@ -299,19 +299,16 @@ app.delete('/users/:Username', async (req, res) => {
 });
 
 // Delete favorite movie
-app.delete('/users/:Username/movies/:MovieID', async (req, res) => {
-  await Users.findOneAndUpdate({ Username: req.params.Username }, {
-      $pull: { FavoriteMovies: req.params.MovieID }
-  },
-      { new: true }) 
-      .then((updatedUser) => {
-          res.json(updatedUser);
-      })
-      .catch((err) => {
-          console.error(err);
-          res.status(500).send('Error: ' + err);
-      });
-});
+app.delete('/users/:Username/movies/:MovieID', (req, res) => { 
+  Users.findOneAndUpdate({ Username: req.params.Username }, 
+    { $pull: { FavoriteMovies: req.params.MovieID } }, 
+    { new: true }) // This line makes sure that the updated document is returned 
+    .then((updatedUser) => { res.json(updatedUser); }) 
+    .catch((err) => 
+    { console.error(err); 
+      res.status(500).send('Error: ' + err); 
+    });
+   }); 
 
 // Create error handling middleware
 app.use((err, req, res, next) => {
