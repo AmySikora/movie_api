@@ -20,13 +20,13 @@ const uuid = require('uuid');
 
 const app = express();
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // import auth.js file 
-let auth = require('./auth') (app);
+let auth = require('./auth')(app);
 
 // require Passpot module 
-const passport = require('passport'); 
+const passport = require('passport');
 require('./passport');
 
 // Serve static files
@@ -36,7 +36,7 @@ app.use(express.static('public'));
 app.use(morgan('combined'));
 
 // Body-Parser
-//app.use(bodyParser.json());
+app.use(bodyParser.json());
 
 // In-memory data
 /*let users = [
