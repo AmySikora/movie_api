@@ -22,13 +22,6 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// import auth.js file 
-let auth = require('./auth')(app);
-
-// require Passpot module 
-const passport = require('passport');
-require('./passport');
-
 // Serve static files
 app.use(express.static('public'));
 
@@ -38,6 +31,13 @@ app.use(morgan('combined'));
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// import auth.js file 
+let auth = require('./auth')(app);
+
+// require Passpot module 
+const passport = require('passport');
+require('./passport');
 
 // In-memory storage 
 /*let users = [
