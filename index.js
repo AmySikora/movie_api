@@ -15,12 +15,12 @@ mongoose.connect('mongodb://localhost:27017/moviesDB')
 // Require express, Morgan, body-parser, and uuid
 const express = require('express');
 const morgan = require('morgan');
-const bodyParser = require('body-parser');
+
 const uuid = require('uuid');
 
 const app = express();
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
 // import auth.js file 
 let auth = require('./auth')(app);
@@ -35,10 +35,11 @@ app.use(express.static('public'));
 // Morgan used to log requests 
 app.use(morgan('combined'));
 
-// Body-Parser
+const bodyParser = require('body-parser');
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// In-memory data
+// In-memory storage 
 /*let users = [
 {
   id: 1,
@@ -98,11 +99,8 @@ let movies = [
             "Birth": "March 27, 1963",
           },  
           "ImageURL": "https://upload.wikimedia.org/wikipedia/en/3/3b/Pulp_Fiction_%281994%29_poster.jpg",
-          "Featured": false
-        },  
-    ];
+          "Featured": falseapp.use(express.urlencoded({ extended: true }));        },  
 */
-
 // CREATE
 // Create a user 
 app.post('/users', async (req, res) => {
