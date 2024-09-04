@@ -15,7 +15,6 @@ mongoose.connect('mongodb://localhost:27017/moviesDB')
 // Require express, Morgan, body-parser, and uuid
 const express = require('express');
 const morgan = require('morgan');
-
 const uuid = require('uuid');
 
 const app = express();
@@ -28,16 +27,9 @@ app.use(express.static('public'));
 // Morgan used to log requests 
 app.use(morgan('combined'));
 
-const bodyParser = require('body-parser');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// import auth.js file 
-let auth = require('./auth')(app);
-
-// require Passpot module 
 const passport = require('passport');
 require('./passport');
+let auth = require('./auth')(app);
 
 // In-memory storage 
 /*let users = [

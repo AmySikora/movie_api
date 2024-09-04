@@ -33,5 +33,5 @@ module.exports = (router) => {
         return res.json({ user, token });
       });
     })(req, res);
-  });
+  });let auth = require('./auth')(app);
 }
