@@ -280,7 +280,12 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt',
 // Update username for a user in Mongoose
 app.put('/users/:Username', passport.authenticate('jwt', 
 { session: false }), async (req, res) => {
-  await Users.findOneAndDelete({ Username: req.params.username}, 
+  // Condition added here
+  if (req.user.Username !== req.params.Username) {
+    return res.status(400).send('Permission denied');
+  }
+  // Condition ends
+  await Users.findOneAndUpdate({ Username: req.params.username}, 
     { $set: {
         Username: req.body.Username,
         Password: req.body.Password,
