@@ -21,16 +21,17 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files
-app.use(express.static('public'));
 
 // Morgan used to log requests 
 app.use(morgan('combined'));
 
 const passport = require('passport');
 require('./passport');
+
 let auth = require('./auth')(app);
 
+// Serve static files
+app.use(express.static('public'));
 // In-memory storage 
 /*let users = [
 {
@@ -108,11 +109,13 @@ app.post('/users', async (req, res) => {
             Email: req.body.Email,
             Birthday: req.body.Birthday
           })
-          .then((user) =>{res.status(201).json(user) })
-        .catch((error) => {
-          console.error(error);
-          res.status(500).send('Error: ' + error);
-        })
+          .then((user) => {
+            res.status(201).json(user) 
+          })
+          .catch((error) => {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
+        });
       }
     })
     .catch((error) => {
