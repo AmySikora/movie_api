@@ -15,19 +15,19 @@ mongoose.connect('mongodb://localhost:27017/moviesDB')
 // Require express, Morgan, body-parser, and uuid
 const express = require('express');
 const morgan = require('morgan');
-const bodyParser = require('body-parser');
-const uuid = require('uuid');
-
-const app = express();
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// import auth.js file 
-let auth = require('./auth')(app);
 
 // require Passpot module 
 const passport = require('passport');
 require('./passport');
+
+// import auth.js file 
+let auth = require('./auth')(app);
+
+//const uuid = require('uuid');
+
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Serve static files
 app.use(express.static('public'));
