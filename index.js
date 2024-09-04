@@ -15,19 +15,19 @@ mongoose.connect('mongodb://localhost:27017/moviesDB')
 // Require express, Morgan, body-parser, and uuid
 const express = require('express');
 const morgan = require('morgan');
+const bodyParser = require('body-parser');
+const uuid = require('uuid');
 
-// require Passpot module 
-const passport = require('passport');
-require('./passport');
+const app = express();
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // import auth.js file 
 let auth = require('./auth')(app);
 
-//const uuid = require('uuid');
-
-const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// require Passpot module 
+const passport = require('passport');
+require('./passport');
 
 // Serve static files
 app.use(express.static('public'));
@@ -168,7 +168,7 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt',
 
   if (user) {
     user.favoriteMovies.push(movieTitle);
-    res.status(200).send(`${movieTitle} has been added to user ${id}'s array`);;
+    res.status(200).send(${movieTitle} has been added to user ${id}'s array);;
   } else {
       res.status(400).send('no such user')
   }
@@ -280,12 +280,7 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt',
 // Update username for a user in Mongoose
 app.put('/users/:Username', passport.authenticate('jwt', 
 { session: false }), async (req, res) => {
-  // Condition added here
-  if (req.user.Username !== req.params.Username) {
-    return res.status(400).send('Permission denied');
-  }
-  // Condition ends
-  await Users.findOneAndUpdate({ Username: req.params.username}, 
+  await Users.findOneAndDelete({ Username: req.params.username}, 
     { $set: {
         Username: req.body.Username,
         Password: req.body.Password,
