@@ -172,7 +172,7 @@ app.get('/', (req, res) => {
 });
 
 // Get a User by name
-app.get('/users/:Username',passport.authenticate('jwt', 
+app.get('/users/:Username', passport.authenticate('jwt', 
 { session: false }), async (req, res) => {
   await Users.findOne({ Username: req.params.Username })
     .then((user) => {
