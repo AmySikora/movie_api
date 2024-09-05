@@ -28,6 +28,22 @@ app.use(morgan('combined'));
 const passport = require('passport');
 require('./passport');
 
+const cors = require('cors');
+
+let allowedOrgins = ['http://localhost:8080', 'http://testsite.com'];
+
+app.use(cors( {
+  orgin: (orgin, callback) => {
+    if(!orgin) return callback(null, true);
+    if(allowedOrgins.indexOf(orgin) === -1) { // if a certain orgin is not found on the list of allowed
+
+      let message = 'The CORS policy for this application doesn"t allow access from orgin ' = orgin;
+      return callback(new Error(message ), false);
+    }
+    return callback(null, true);
+  }
+}));
+
 let auth = require('./auth')(app);
 
 // Serve static files
