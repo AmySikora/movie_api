@@ -4,7 +4,7 @@
   "description": "my-first-package",
   "main": "index.js",
   "scripts": {
-    "test": "\"echo \\\"This test is working\\\"",
+    "test": "\"echo \\\"Error: no test specified\\\"",
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
