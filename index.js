@@ -114,28 +114,29 @@ let movies = [
 // CREATE
 // Create a user 
 app.post('/users', async (req, res) => {
-  await Users.findOne({ Username: req.body.Username })
+  let hashedPassword = Users.hashPassword(req.body.Password);
+  await Users.findOne({ Username: req.body.Username }) //searches to see is user already exists
     .then((user) => {
-      if (user) {
+      if (user) { // is user already exists sends message below
         return res.status(400).send(req.body.Username + ' already exists');
       } else {
-        Users.create({
+        Users
+        .create({
             Username: req.body.Username,
             Password: req.body.Password,
             Email: req.body.Email,
             Birthday: req.body.Birthday
           })
-          .then((user) => {
-            res.status(201).json(user) 
+          .then((user) => { res.status(201).json(user) 
           })
           .catch((error) => {
-            console.log(error);
+            console.error(error);
             res.status(500).send('Error: ' + error);
         });
       }
     })
     .catch((error) => {
-      console.log(error);
+      console.error(error);
       res.status(500).send('Error: ' + error);
     });
 });
