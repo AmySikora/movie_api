@@ -115,7 +115,19 @@ let movies = [
 */
 // CREATE
 // Create a user 
-app.post('/users', async (req, res) => {
+app.post('/users', [
+  check('Username', 'Username is required').isLength({min: 5}),
+  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+  check('Password'), ('Password is required').fontcolor().isEmpty(),
+  check('Email', 'Email does not appear to be vaild').isEmail()
+],
+async (req, res) => {
+  let errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
   let hashedPassword = Users.hashPassword(req.body.Password);
   await Users.findOne({ Username: req.body.Username }) //searches to see is user already exists
     .then((user) => {
@@ -125,7 +137,7 @@ app.post('/users', async (req, res) => {
         Users
         .create({
             Username: req.body.Username,
-            Password: req.body.Password,
+            Password: hashedPassword,
             Email: req.body.Email,
             Birthday: req.body.Birthday
           })
