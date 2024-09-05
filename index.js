@@ -204,9 +204,8 @@ app.get('/', (req, res) => {
   res.send('Welcome to myFlix!');
 });
 
-// Get a User by name
-app.get('/users/:Username', passport.authenticate('jwt', 
-{ session: false }), async (req, res) => {
+// Get a User by username
+app.get('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Users.findOne({ Username: req.params.Username })
     .then((user) => {
       res.json(user);
@@ -218,8 +217,7 @@ app.get('/users/:Username', passport.authenticate('jwt',
 });
 
 // Get all users
-app.get('/users', passport.authenticate('jwt', 
-{ session: false }), async (req, res) => {
+app.get('/users', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Users.find()
     .then((users) => {
       res.status(201).json(users);
@@ -231,8 +229,7 @@ app.get('/users', passport.authenticate('jwt',
 });
 
 // READ Movies
-app.get('/movies', passport.authenticate('jwt', 
-{ session: false }), async (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.find()
   .then((movies) => {
     res.status(201).json(movies);
@@ -244,8 +241,8 @@ app.get('/movies', passport.authenticate('jwt',
 });
 
 // READ Title
-app.get('/movies/:title', passport.authenticate('jwt', 
-{ session: false }), async (req, res) => {
+app.get('/movies/:title', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  
   const title  = req.params.title;
   const movie = await Movies.findOne({ Title: title });
 
@@ -257,16 +254,15 @@ app.get('/movies/:title', passport.authenticate('jwt',
 });
 
 // READ Genre
-app.get('/movies/:genre', passport.authenticate('jwt', 
-{ session: false }), async (req, res) => {
+app.get('/movies/:genre', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const genre = req.params.genre;
   const movie = await Movies.findOne({ Genre: genre });
 
   if (movie) {
-      res.status(200).json(movie);
-  } else {
-      res.status(404).send('Genre was not found');
-  }
+    res.status(200).json(movie.Genre);
+} else {
+    res.status(404).send('No such genre found');
+}
 });
 
 // READ Director Name
@@ -335,7 +331,7 @@ app.put(
     },
     { new: true }) // This line makes sure that the updated document is returned
     .then((updatedUser) => {
-        res.status(200).json(updatedUser);
+        res.json(updatedUser);
     })
     .catch((err) => {
         console.error(err);
@@ -347,6 +343,7 @@ app.put(
 // Delete a user by username
 app.delete('/users/:Username', passport.authenticate('jwt', 
 { session: false }), async (req, res) => {
+  
   await Users.findOneAndDelete({ Username: req.params.Username })
   .then((user) => {
     if (!user) {
@@ -362,17 +359,19 @@ app.delete('/users/:Username', passport.authenticate('jwt',
 });
 
 // Delete favorite movie
-app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', 
-{ session: false }), (req, res) => { 
-  Users.findOneAndUpdate({ Username: req.params.Username }, 
+app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), 
+async (req, res) => { 
+  await Users.findOneAndUpdate({ Username: req.params.Username }, 
     { $pull: { FavoriteMovies: req.params.MovieID } }, 
     { new: true }) // This line makes sure that the updated document is returned 
-    .then((updatedUser) => { res.json(updatedUser); }) 
+    .then((updatedUser) => { 
+      res.json(updatedUser); 
+    }) 
     .catch((err) => 
     { console.error(err); 
       res.status(500).send('Error: ' + err); 
     });
-   }); 
+ }); 
 
 // Create error handling middleware
 app.use((err, req, res, next) => {
@@ -382,6 +381,6 @@ app.use((err, req, res, next) => {
 
 // start server
 const port = process.env.PORT || 8080;
-app.listen(port, () => {
-    console.log('Your app is listening on port 8080.');
+app.listen(port, '0.0.0.0',() => {
+ console.log('Listening on Port ' + port);
 });
