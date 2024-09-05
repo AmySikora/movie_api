@@ -116,9 +116,9 @@ let movies = [
 // CREATE
 // Create a user 
 app.post('/users', [
-  check('Username', 'Username is required').isLength({min: 5}),
+  check('Username', 'Username is required').isLength({ min: 5 }),
   check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-  check('Password'), ('Password is required').not().isEmpty(),
+  check('Password', 'Password is required').not().isEmpty(),
   check('Email', 'Email does not appear to be vaild').isEmail()
 ],
 async (req, res) => {
@@ -301,10 +301,18 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt',
   });
 });
 
-// Update username for a user in Mongoose
+// Update user by username
 app.put('/users/:Username', 
-passport.authenticate('jwt', 
-{ session: false }), 
+passport.authenticate('jwt', { session: false }), 
+[
+  check('Username', 'Username is required').isLength({min: 5}),
+  check(
+    'Username',
+    'Username contains non alphamumeric characters - not allowed.'
+  ).isAlphanumeric(),
+  check('Password', 'Password is required.').not().isEmpty(),
+  check('Email', 'Email does not appear to be vaild.').isEmail(),
+],
 async (req, res) => {
   await Users.findOneAndDelete({ Username: req.params.username}, 
     { $set: {
