@@ -22,8 +22,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const cors = require('cors');
+app.use(cors());
 
-let allowedOrgins = ['http://localhost:8080', 'http://testsite.com'];
+/*let allowedOrgins = ['http://localhost:8080', 'http://testsite.com'];
 
 app.use(cors( {
   orgin: (orgin, callback) => {
@@ -35,7 +36,7 @@ app.use(cors( {
     }
     return callback(null, true);
   }
-}));
+})); */
 
   let auth = require('./auth')(app);
 
