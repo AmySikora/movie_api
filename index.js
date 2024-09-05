@@ -134,8 +134,7 @@ async (req, res) => {
       if (user) { // is user already exists sends message below
         return res.status(400).send(req.body.Username + ' already exists');
       } else {
-        Users
-        .create({
+        Users.create({
             Username: req.body.Username,
             Password: hashedPassword,
             Email: req.body.Email,
@@ -302,19 +301,31 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt',
 });
 
 // Update user by username
-app.put('/users/:Username', 
-passport.authenticate('jwt', { session: false }), 
-[
-  check('Username', 'Username is required').isLength({min: 5}),
-  check(
-    'Username',
-    'Username contains non alphamumeric characters - not allowed.'
-  ).isAlphanumeric(),
-  check('Password', 'Password is required.').not().isEmpty(),
-  check('Email', 'Email does not appear to be vaild.').isEmail(),
-],
-async (req, res) => {
-  await Users.findOneAndDelete({ Username: req.params.username}, 
+app.put(
+  '/users/:Username',
+  passport.authenticate('jwt', { session: false }),
+  [
+    check('Username', 'Username is required').isLength({ min: 5 }),
+    check(
+      'Username',
+      'Username contains non alphanumeric characters - not allowed.'
+    ).isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail(),
+  ],
+  async (req, res) => {
+    // check the validation object for errors
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+    // Condition to be checked
+    if (req.user.Username !== req.params.Username) {
+      return res.status(400).send('Permission denied');
+    }
+
+    await Users.findOneAndDelete({ Username: req.params.username}, 
     { $set: {
         Username: req.body.Username,
         Password: req.body.Password,
