@@ -46,7 +46,7 @@ app.use(cors( {
 // Serve static files
 app.use(express.static('public'));
 
-// Morgan middleware used to log requests 
+// Morgan middleware 
 app.use(morgan('common'));
 
 // In-memory storage 
