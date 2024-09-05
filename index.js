@@ -27,13 +27,6 @@ app.use(express.urlencoded({ extended: true }));
   require('./passport');
 
 const cors = require('cors');
-app.use(cors());
-
-// Serve static files
-app.use(express.static('public'));
-
-// Morgan middleware used to log requests 
-app.use(morgan('common'));
 
 let allowedOrgins = ['http://localhost:8080', 'http://testsite.com'];
 
@@ -48,7 +41,11 @@ app.use(cors( {
     return callback(null, true);
   }
 }));
+// Serve static files
+app.use(express.static('public'));
 
+// Morgan middleware used to log requests 
+app.use(morgan('common'));
 
 // In-memory storage 
 /*let users = [
@@ -277,9 +274,9 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt',
   await Users.findOneAndUpdate({ Username: req.params.Username }, {
      $push: { FavoriteMovies: req.params.MovieID }
    },
-   { new: true }) 
-  .then((updatedUser) => {
-    res.json(updatedUser);
+    { new: true }) 
+    .then((updatedUser) => {
+      res.json(updatedUser);
   })
   .catch((err) => {
     console.error(err);
@@ -288,8 +285,10 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt',
 });
 
 // Update username for a user in Mongoose
-app.put('/users/:Username', passport.authenticate('jwt', 
-{ session: false }), async (req, res) => {
+app.put('/users/:Username', 
+passport.authenticate('jwt', 
+{ session: false }), 
+async (req, res) => {
   await Users.findOneAndDelete({ Username: req.params.username}, 
     { $set: {
         Username: req.body.Username,
