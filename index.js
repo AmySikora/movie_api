@@ -8,12 +8,13 @@ const Genres = Models.Genre;
 const Directors = Models.Director;
 
 // mongoose connect
-mongoose.connect("mongodb+srv://sikoraa:PW@myflixdb.jqxin.mongodb.net/myflixdb?retryWrites=true&w=majority", {
+mongoose.connect( process.env.CONNECTION_URI ), {
     useNewUrlParser: true,
     useUnifiedTopology: true
-})
+
 .then(() => console.log('MongoDB connected successfully'))
-.catch(err => console.error('Error connecting to MongoDB:', err));
+.catch(err => console.error('Error connecting to MongoDB:', err))
+};
 
 // Require express, Morgan, body-parser, and uuid
 const express = require('express');
