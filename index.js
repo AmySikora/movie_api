@@ -320,7 +320,7 @@ app.put(
     if (req.user.Username !== req.params.Username) {
       return res.status(400).send('Permission denied');
     }
-
+     // condition completed 
     await Users.findOneAndDelete({ Username: req.params.username}, 
     { $set: {
         Username: req.body.Username,
