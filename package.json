@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "my-first-package",
   "main": "index.js",
-  "scripts": {
+    "scripts": {
     "test": "\"echo \\\"Error: no test specified\\\"",
     "start": "node index.js",
     "dev": "nodemon index.js"
@@ -37,6 +37,10 @@
     "swagger-ui-express": "^5.0.1",
     "uuid": "^10.0.0"
   },
+  "engines": {
+    "node": "20.16.0"
+  },
+
   "devDependencies": {
     "nodemon": "^3.1.4"
   }
