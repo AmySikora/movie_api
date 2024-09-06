@@ -183,21 +183,6 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt',
   });
 });
 
-// Create favorite movies
-/*app.post('/users/:id/:movieTitle', (req, res) => {
-  const { id, movieTitle } = req.params;
-
-  let user = users.find( user => user.id == id );
-
-  if (user) {
-    user.favoriteMovies.push(movieTitle);
-    res.status(200).send(${movieTitle} has been added to user ${id}'s array);;
-  } else {
-      res.status(400).send('no such user')
-  }
-});
-*/
-
 // READ
 
 app.get('/', (req, res) => {
@@ -321,7 +306,7 @@ app.put(
       return res.status(400).send('Permission denied');
     }
      // condition completed 
-    await Users.findOneAndDelete({ Username: req.params.username}, 
+    await Users.findOneAndDelete({ Username: req.params.Username}, 
     { $set: {
         Username: req.body.Username,
         Password: req.body.Password,
