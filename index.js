@@ -11,12 +11,10 @@ const Directors = Models.Director;
 //mongoose.connect('mongodb://localhost:27017/dbname', { useNewUrlParser: true, useUnifiedTopology: true });
 const CONNECTION_URI = process.env.CONNECTION_URI; 
 
-mongoose.connect(CONNECTION_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected successfully'))
-  .catch(err => console.error('MongoDB connection error:', err));
+  .catch((error) => console.error('MongoDB connection error:', error));
+
 
 // Require express, Morgan, body-parser, and uuid
 const express = require('express');
