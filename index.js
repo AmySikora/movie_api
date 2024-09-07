@@ -9,9 +9,8 @@ const Directors = Models.Director;
 
 // mongoose connect
 //mongoose.connect('mongodb://localhost:27017/dbname', { useNewUrlParser: true, useUnifiedTopology: true });
-const CONNECTION_URI = process.env.CONNECTION_URI; 
 
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect('process.env.MONGO_URI')
   .then(() => console.log('MongoDB connected successfully'))
   .catch((error) => console.error('MongoDB connection error:', error));
 
