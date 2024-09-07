@@ -8,6 +8,8 @@ const Genres = Models.Genre;
 const Directors = Models.Director;
 
 // mongoose connect
+//mongoose.connect('mongodb://localhost:27017/dbname', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://sikoraa:DXGT4EnYJmx76gE6@my@myflixdb.jqxin.mongodb.net/?retryWrites=true&w=majority&appName=moviesDB', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connect( process.env.CONNECTION_URI ), {
     useNewUrlParser: true,
     useUnifiedTopology: true
