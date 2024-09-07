@@ -10,19 +10,26 @@ const Directors = Models.Director;
 // mongoose connect
 //mongoose.connect('mongodb://localhost:27017/moviesDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
-mmongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
 // Require express, Morgan, body-parser, and uuid
 const express = require('express');
 const morgan = require('morgan');
-const uuid = require('uuid');
+//const uuid = require('uuid');
 
 const app = express();
 app.use(express.json());
+
 app.use(express.urlencoded({ extended: true }));
 
-const { check, validationResult } = require('express-validator');
+  let auth = require('./auth')(app);
+  const passport = require('passport');
+  require('./passport');
+
+  const { check, validationResult } = require('express-validator');
+
+    check('Username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric()
 
 const cors = require('cors');
 app.use(cors());
@@ -40,11 +47,6 @@ app.use(cors( {
     return callback(null, true);
   }
 })); */
-
-  let auth = require('./auth')(app);
-
-  const passport = require('passport');
-  require('./passport');
 
 // Serve static files
 app.use(express.static('public'));
