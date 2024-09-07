@@ -114,37 +114,26 @@ let movies = [
 */
 // CREATE
 // Create a user 
-app.post('/users', [
-  check('Username', 'Username is required').isLength({ min: 5 }),
-  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-  check('Password', 'Password is required').not().isEmpty(),
-  check('Email', 'Email does not appear to be vaild').isEmail()
-],
-async (req, res) => {
-  let errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
-  }
-
+app.post('/users', async (req, res) => {
   let hashedPassword = Users.hashPassword(req.body.Password);
-  await Users.findOne({ Username: req.body.Username }) //searches to see is user already exists
+  await Users.findOne({ Username: req.body.Username }) // Search to see if a user with the requested username already exists
     .then((user) => {
-      if (user) { // is user already exists sends message below
+      if (user) {
+      //If the user is found, send a response that it already exists
         return res.status(400).send(req.body.Username + ' already exists');
       } else {
-        Users.create({
+        Users
+          .create({
             Username: req.body.Username,
             Password: hashedPassword,
             Email: req.body.Email,
             Birthday: req.body.Birthday
           })
-          .then((user) => { res.status(201).json(user) 
-          })
+          .then((user) => { res.status(201).json(user) })
           .catch((error) => {
             console.error(error);
             res.status(500).send('Error: ' + error);
-        });
+          });
       }
     })
     .catch((error) => {
@@ -152,19 +141,6 @@ async (req, res) => {
       res.status(500).send('Error: ' + error);
     });
 });
-
-/*app.post('/users', (req, res) => {
-  const newUser = req.body;
-  if (newUser.name) {
-    newUser.id = uuid.v4();
-    users.push(newUser);
-    res.status(201).json(newUser)
-  } else {
-    res.status(400).send('users need names')
-  }
-
-})
-*/
 
 // Add a moive to a user's list of favorites in Mongoose 
 app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', 
