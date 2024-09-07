@@ -8,45 +8,41 @@ const Genres = Models.Genre;
 const Directors = Models.Director;
 
 // mongoose connect
-//mongoose.connect('mongodb://localhost:27017/moviesDB', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost:27017/moviesDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+//mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
-
-// Require express, Morgan, body-parser, and uuid
+// Require express and Morgan
 const express = require('express');
 const morgan = require('morgan');
 //const uuid = require('uuid');
 
 const app = express();
-app.use(express.json());
-
-app.use(express.urlencoded({ extended: true }));
-
-  let auth = require('./auth')(app);
-  const passport = require('passport');
-  require('./passport');
-
-  const { check, validationResult } = require('express-validator');
-
-    check('Username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric()
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
 
 const cors = require('cors');
-app.use(cors());
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
-/*let allowedOrgins = ['http://localhost:8080', 'http://testsite.com'];
-
-app.use(cors( {
-  orgin: (orgin, callback) => {
-    if(!orgin) return callback(null, true);
-    if(allowedOrgins.indexOf(orgin) === -1) { // if a certain orgin is not found on the list of allowed
-
-      let message = 'The CORS policy for this application doesn"t allow access from orgin ' = orgin;
+app.use(cors({
+  origin: (origin, callback) => {
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn’t found on the list of allowed origins
+      let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
       return callback(new Error(message ), false);
     }
     return callback(null, true);
   }
-})); */
+}));
+
+let auth = require('./auth')(app);
+  
+const passport = require('passport');
+require('./passport');
+
+const { check, validationResult } = require('express-validator');
+
+    check('Username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric()
 
 // Serve static files
 app.use(express.static('public'));
