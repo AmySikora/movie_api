@@ -1,6 +1,6 @@
 // Require Mongoose
 const mongoose = require('mongoose');
-const Models = require('./models.js');
+const Models = require('/models.js');
 
 const Movies = Models.Movie;
 const Users = Models.User;
@@ -21,6 +21,9 @@ const app = express();
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
+const { check, validationResult } = require('express-validator');
+  check('Username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric()
+
 const cors = require('cors');
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
@@ -39,10 +42,6 @@ let auth = require('./auth')(app);
   
 const passport = require('passport');
 require('./passport');
-
-const { check, validationResult } = require('express-validator');
-
-    check('Username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric()
 
 // Serve static files
 app.use(express.static('public'));
@@ -114,7 +113,21 @@ let movies = [
 */
 // CREATE
 // Create a user 
-app.post('/users', async (req, res) => {
+app.post('/users', 
+[
+  check('Username', 'Username is required').isLength({min: 5}),
+  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+  check('Password', 'Password is required').not().isEmpty(),
+  check('Email', 'Email does not appear to be valid').isEmail()
+], async (req, res) => {
+
+// check the validation object for errors
+  let errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
   let hashedPassword = Users.hashPassword(req.body.Password);
   await Users.findOne({ Username: req.body.Username }) // Search to see if a user with the requested username already exists
     .then((user) => {
