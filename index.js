@@ -6,8 +6,10 @@ const Movies = Models.Movie;
 const Users = Models.User;
 
 // mongoose connect
-//mongoose.connect('mongodb://localhost:27017/moviesDB', { useNewUrlParser: true, useUnifiedTopology: true });
-//mongoose.connect('mongodb+srv://sikoraa:DXGT4EnYJmx76gE6@myflixdb.jqxin.mongodb.net/moviesDB?retryWrites=true&w=majority&appName=MyFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+//mongoose.connect('mongodb:/mongodb+srv://sikoraa:DXGT4EnYJmx76gE6@myflixdb.jqxin.mongodb.net/moviesDB?retryWrites=true&w=majority&appName=MyFlixDB'/localhost:27017/moviesDB', 
+//                  mongodb+srv://sikoraa:DXGT4EnYJmx76gE6@myflixdb.jqxin.mongodb.net/moviesDB?retryWrites=true&w=majority
+//{ useNewUrlParser: true, useUnifiedTopology: true });
+//mongoose.connect(', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Require express and Morgan
