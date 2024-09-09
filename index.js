@@ -4,8 +4,6 @@ const Models = require('./models.js');
 
 const Movies = Models.Movie;
 const Users = Models.User;
-const Genres = Models.Genre;
-const Directors = Models.Director;
 
 // mongoose connect
 //mongoose.connect('mongodb://localhost:27017/moviesDB', { useNewUrlParser: true, useUnifiedTopology: true });
@@ -25,7 +23,7 @@ const { check, validationResult } = require('express-validator');
   check('Username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric()
 
 const cors = require('cors');
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+let allowedOrigins = ['http://localhost:8080', 'https://myflixmovies123-d3669f5b95da.herokuapp.com/'];
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -143,7 +141,7 @@ app.get('/users', passport.authenticate('jwt', { session: false }), async (req, 
 app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.find()
   .then((movies) => {
-    res.status(201).json(movies);
+    res.status(200).json(movies);
   })
   .catch((err) => {
     console.error(err);
@@ -167,9 +165,8 @@ app.get('/movies/:title', passport.authenticate('jwt', { session: false }), asyn
 // READ Genre
 app.get('/movies/:genre', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const genre = req.params.genre;
-  const movie = await Movies.findOne({ Genre: genre });
-
-  if (movie) {
+  const movies = await Movies.find({ 'Genre.Name': req.params.genre });
+  if (movies) {
     res.status(200).json(movie.Genre);
 } else {
     res.status(404).send('No such genre found');
@@ -180,7 +177,7 @@ app.get('/movies/:genre', passport.authenticate('jwt', { session: false }), asyn
 app.get('/movies/directors/:directorName', passport.authenticate('jwt', 
 { session: false }), async (req, res) => {
       const directorName = req.params.directorName;
-      const movie = await Movies.findOne({ directorName: directorName });
+      const movie = await Movies.findOne({ 'Director.Name': directorName });
 
       if (movie) {
           res.status(200).json(movie.Director);
@@ -232,10 +229,10 @@ app.put(
       return res.status(400).send('Permission denied');
     }
      // condition completed 
-    await Users.findOneAndDelete({ Username: req.params.Username}, 
+    await Users.findOneAndUpdate({ Username: req.params.Username}, 
     { $set: {
         Username: req.body.Username,
-        Password: req.body.Password,
+        Password: Users.hashPassword(req.body.Password),
         Email: req.body.Email,
         Birthday: req.body.Birthday
       }
