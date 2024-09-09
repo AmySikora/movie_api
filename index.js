@@ -13,7 +13,6 @@ mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifie
 // Require express and Morgan
 const express = require('express');
 const morgan = require('morgan');
-//const uuid = require('uuid');
 
 const app = express();
   app.use(express.json());
@@ -52,12 +51,10 @@ app.use(morgan('common'));
 app.post('/users', 
 [
   check('Username', 'Username is required').isLength({min: 5}),
-  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+  check('Username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric(),
   check('Password', 'Password is required').not().isEmpty(),
   check('Email', 'Email does not appear to be valid').isEmail()
 ], async (req, res) => {
-
-// check the validation object for errors
   let errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -65,24 +62,23 @@ app.post('/users',
   }
 
   let hashedPassword = Users.hashPassword(req.body.Password);
-  await Users.findOne({ Username: req.body.Username }) // Search to see if a user with the requested username already exists
+ 
+  await Users.findOne({ Username: req.body.Username })
     .then((user) => {
       if (user) {
-      //If the user is found, send a response that it already exists
         return res.status(400).send(req.body.Username + ' already exists');
       } else {
-        Users
-          .create({
-            Username: req.body.Username,
-            Password: hashedPassword,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday
-          })
-          .then((user) => { res.status(201).json(user) })
-          .catch((error) => {
-            console.error(error);
-            res.status(500).send('Error: ' + error);
-          });
+        Users.create({
+          Username: req.body.Username,
+          Password: hashedPassword,
+          Email: req.body.Email,
+          Birthday: req.body.Birthday
+        })
+        .then((user) => { res.status(201).json(user) })
+        .catch((error) => {
+          console.error(error);
+          res.status(500).send('Error: ' + error);
+        });
       }
     })
     .catch((error) => {
@@ -90,8 +86,7 @@ app.post('/users',
       res.status(500).send('Error: ' + error);
     });
 });
-
-// Add a moive to a user's list of favorites in Mongoose 
+// Add a movie to a user's list of favorites in Mongoose 
 app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', 
 { session: false }), async (req, res) => {
   await Users.findOneAndUpdate({ Username: req.params.Username }, {
@@ -139,57 +134,56 @@ app.get('/users', passport.authenticate('jwt', { session: false }), async (req, 
 
 // READ Movies
 app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  await Movies.find()
-  .then((movies) => {
-    res.status(200).json(movies);
-  })
-  .catch((err) => {
-    console.error(err);
-    res.status(500).send('Error: ' + err);
-  });
+  Movies.find()
+    .then((movies) => {
+      res.status(201).json(movies);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
 });
 
 // READ Title
-app.get('/movies/:title', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  
-  const title  = req.params.title;
-  const movie = await Movies.findOne({ Title: title });
-
-  if (movie) {
-    res.status(200).json(movie);
-  } else {
-    res.status(400).send('No such movie');
-  }
+app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Movies.findOne({ title: req.params.title })
+    .then((movie) => {
+      res.json(movie);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
 
 // READ Genre
-app.get('/movies/:genre', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  const genre = req.params.genre;
-  const movies = await Movies.find({ 'Genre.Name': req.params.genre });
-  if (movies) {
-    res.status(200).json(movie.Genre);
-} else {
-    res.status(404).send('No such genre found');
-}
+app.get('/movies/genre/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Movies.findOne({ 'genre.name': req.params.name })
+    .then((genre) => {
+      res.json(genre);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error ' + err);
+    });
 });
 
 // READ Director Name
-app.get('/movies/directors/:directorName', passport.authenticate('jwt', 
-{ session: false }), async (req, res) => {
-      const directorName = req.params.directorName;
-      const movie = await Movies.findOne({ 'Director.Name': directorName });
-
-      if (movie) {
-          res.status(200).json(movie.Director);
-      } else {
-          res.status(404).send('Director not found');
-      }
+app.get('/director/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Movies.findOne({ 'directors.name': req.params.name })
+    .then((director) => {
+      res.json(director);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error ' + err);
+    });
 });
 
 // UPDATE 
 
 // Update user's favorite movies in Mongoose
-app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', 
+app.put('/users/:Username/movies/:MovieID', passport.authenticate('jwt', 
 { session: false }), async (req, res) => {
   await Users.findOneAndUpdate({ Username: req.params.Username }, {
      $push: { FavoriteMovies: req.params.MovieID }
