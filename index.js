@@ -160,13 +160,17 @@ app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req
 
 // READ Genre
 app.get('/movies/genre/:genreName', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Movies.findOne({ genreName: req.params.name })
-    .then((genre) => {
-      res.json(genre);
+  Movies.find({ 'Genre.Name': req.params.genreName }) // Correctly query nested field
+    .then((movies) => {
+      if (movies.length > 0) {
+        res.json(movies);
+      } else {
+        res.status(404).send('No movies found for the specified genre');
+      }
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).send('Error ' + err);
+      res.status(500).send('Error: ' + err);
     });
 });
 
