@@ -6,11 +6,11 @@ const Movies = Models.Movie;
 const Users = Models.User;
 
 // mongoose connect
-//mongoose.connect('mongodb:/mongodb+srv://sikoraa:DXGT4EnYJmx76gE6@myflixdb.jqxin.mongodb.net/moviesDB?retryWrites=true&w=majority&appName=MyFlixDB'/localhost:27017/moviesDB', 
+mongoose.connect('mongodb+srv://sikoraa:DXGT4EnYJmx76gE6@myflixdb.jqxin.mongodb.net/moviesDB?retryWrites=true&w=majority&appName=MyFlixDB') 
 //                  mongodb+srv://sikoraa:DXGT4EnYJmx76gE6@myflixdb.jqxin.mongodb.net/moviesDB?retryWrites=true&w=majority
 //{ useNewUrlParser: true, useUnifiedTopology: true });
 //mongoose.connect(', { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+//mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Require express and Morgan
 const express = require('express');
@@ -148,7 +148,7 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), async (req,
 
 // READ Title
 app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Movies.findOne({ title: req.params.title })
+  Movies.findOne({ Title: req.params.title })
     .then((movie) => {
       res.json(movie);
     })
@@ -160,7 +160,7 @@ app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req
 
 // READ Genre
 app.get('/movies/genre/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Movies.findOne({ 'genre.name': req.params.name })
+  Movies.findOne({ 'Genre.name': req.params.name })
     .then((genre) => {
       res.json(genre);
     })
@@ -172,7 +172,7 @@ app.get('/movies/genre/:name', passport.authenticate('jwt', { session: false }),
 
 // READ Director Name
 app.get('/director/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Movies.findOne({ 'directors.name': req.params.name })
+  Movies.findOne({ 'Directors.name': req.params.name })
     .then((director) => {
       res.json(director);
     })
