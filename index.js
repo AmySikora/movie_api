@@ -176,13 +176,17 @@ app.get('/movies/genre/:genreName', passport.authenticate('jwt', { session: fals
 
 // READ Director Name
 app.get('/director/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Movies.findOne({ directorName: req.params.name })
-    .then((director) => {
-      res.json(director);
+  Movies.find({ 'Director.Name': req.params.name }) // Correctly query nested field
+    .then((movies) => {
+      if (movies.length > 0) {
+        res.json(movies);
+      } else {
+        res.status(404).send('No movies found for the specified director');
+      }
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).send('Error ' + err);
+      res.status(500).send('Error: ' + err);
     });
 });
 
