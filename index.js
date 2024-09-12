@@ -158,6 +158,17 @@ app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req
     });
 });
 
+// READ Genre
+app.get('/movies/genre', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  Movies.find()
+    .then((movies) => {
+      res.status(201).json(movies);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });               
+});
 // READ Genre by name
 app.get('/movies/genre/:genreName', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ genreName: req.params.genreName })
@@ -170,8 +181,20 @@ app.get('/movies/genre/:genreName', passport.authenticate('jwt', { session: fals
     });
 });
 
+// READ Director
+app.get('/movies/director', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  Movies.find()
+    .then((movies) => {
+      res.status(201).json(movies);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    });
+});
+
 // READ Director Name
-app.get('/movies/director/:directorName', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('movies/director/:directorName', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ directorName: req.params.directorName })
     .then((director) => {
       res.json(director);
