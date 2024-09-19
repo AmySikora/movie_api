@@ -5,15 +5,16 @@ let movieSchema = mongoose.Schema({
     Title: { type: String, required: true },
     Description: { type: String, required: true }, // Fixed typo from "require" to "required"
     Genre: {
-        Name: String,
+        Name: { type: String, required: true },
         Description: String
     },
     Director: {
-        Name: String,
-        Bio: String
+        Name: { type: String, required: true },
+        Bio: String,
+        Birth: String
     },
     Actors: [String],
-    ImagePath: String,
+    ImageURL: String,
     Featured: Boolean
 });
 

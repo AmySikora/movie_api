@@ -203,15 +203,15 @@ app.get(
 
 // READ List of Genres
 app.get(
-  "/movies/genres",
+  "/movies/genre",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Movies.distinct("Genre.Name")
-      .then((genres) => {
-        if (genres.length === 0) {
+      .then((genre) => {
+        if (genre.length === 0) {
           return res.status(404).send("No genres found");
         }
-        res.json(genres);
+        res.json(genre);
       })
       .catch((err) => {
         console.error(err);
