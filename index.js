@@ -202,21 +202,20 @@ app.get(
 );
 
 // READ List of Genres
-app.get(
-  "/movies/genre",
-  passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    Movies.find()
-      .then((genre) => {
-        res.status(201).json(genre);
+app.get('/movies/genres', (req, res) => {
+  Movies.distinct('Genre.Name')
+      .then((genres) => {
+          if (genres.length > 0) {
+              res.status(200).json(genres);
+          } else {
+              res.status(404).send('No genres found');
+          }
       })
       .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error: " + err);
+          console.error(err);
+          res.status(500).send('Error: ' + err);
       });
-  }
-);
-
+});
 
 // READ Genre by name
 app.get(
