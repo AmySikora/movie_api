@@ -201,6 +201,22 @@ app.get(
   }
 );
 
+// READ List of Genres
+app.get(
+  "/movies/genres",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Movies.distinct("Genre.Name")
+      .then((genres) => {
+        res.json(genres);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      });
+  }
+);
+
 // READ Genre by name
 app.get(
   "/movies/genre/:genreName",
