@@ -206,32 +206,41 @@ app.get(
   "/movies/genre/:genreName",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Movies.findOne({ GenreName: req.params.GenreName })
+    Movies.findOne({ "Genre.Name": req.params.genreName }) // Updated to match schema
       .then((genre) => {
-        res.json(genre);
+        if (genre) {
+          res.json(genre);
+        } else {
+          res.status(404).send("Genre not found");
+        }
       })
       .catch((err) => {
         console.error(err);
-        res.status(500).send("Error " + err);
+        res.status(500).send("Error: " + err);
       });
   }
 );
 
 // READ Director Name
 app.get(
-  "/director/:directorName",
+  "/movies/director/:directorName",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Movies.findOne({ DirectorName: req.params.directorName })
+    Movies.findOne({ "Director.Name": req.params.directorName }) // Updated to match schema
       .then((director) => {
-        res.json(director);
+        if (director) {
+          res.json(director);
+        } else {
+          res.status(404).send("Director not found");
+        }
       })
       .catch((err) => {
         console.error(err);
-        res.status(500).send("Error " + err);
+        res.status(500).send("Error: " + err);
       });
   }
 );
+
 
 // UPDATE
 
