@@ -6,13 +6,13 @@ const Movies = Models.Movie;
 const Users = Models.User;
 
 // mongoose connect
-mongoose.connect(
-  "mongodb+srv://sikoraa:DXGT4EnYJmx76gE6@myflixdb.jqxin.mongodb.net/moviesDB?retryWrites=true&w=majority&appName=MyFlixDB"
-);
+//mongoose.connect(
+  //"mongodb+srv://sikoraa:DXGT4EnYJmx76gE6@myflixdb.jqxin.mongodb.net/moviesDB?retryWrites=true&w=majority&appName=MyFlixDB"
+//);
 //                  mongodb+srv://sikoraa:DXGT4EnYJmx76gE6@myflixdb.jqxin.mongodb.net/moviesDB?retryWrites=true&w=majority
 //{ useNewUrlParser: true, useUnifiedTopology: true });
 //mongoose.connect(', { useNewUrlParser: true, useUnifiedTopology: true });
-//mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Require express and Morgan
 const express = require("express");
@@ -205,14 +205,11 @@ app.get(
 app.get('/movies/genres', (req, res) => {
   Movies.distinct('Genre.Name')
       .then((genres) => {
-          if (genres.length > 0) {
-              res.status(200).json(genres);
-          } else {
-              res.status(404).send('No genres found');
-          }
+          console.log('Genres found: ', genres); // Log the genres to check the output
+          res.status(200).json(genres);
       })
       .catch((err) => {
-          console.error(err);
+          console.error('Error retrieving genres:', err);
           res.status(500).send('Error: ' + err);
       });
 });
