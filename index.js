@@ -6,12 +6,6 @@ const Movies = Models.Movie;
 const Users = Models.User;
 
 // mongoose connect
-//mongoose.connect(
-  //"mongodb+srv://sikoraa:DXGT4EnYJmx76gE6@myflixdb.jqxin.mongodb.net/moviesDB?retryWrites=true&w=majority&appName=MyFlixDB"
-//);
-//                  mongodb+srv://sikoraa:DXGT4EnYJmx76gE6@myflixdb.jqxin.mongodb.net/moviesDB?retryWrites=true&w=majority
-//{ useNewUrlParser: true, useUnifiedTopology: true });
-//mongoose.connect(', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Require express and Morgan
