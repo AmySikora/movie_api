@@ -208,6 +208,9 @@ app.get(
   (req, res) => {
     Movies.distinct("Genre.Name")
       .then((genres) => {
+        if (genres.length === 0) {
+          return res.status(404).send("No genres found");
+        }
         res.json(genres);
       })
       .catch((err) => {
