@@ -28,6 +28,8 @@ let allowedOrigins = [
   "https://myflixmovies123-d3669f5b95da.herokuapp.com/",
   "https://myFlix-app-123.netlify.app",
 ]; 
+s
+app.options('*', cors());
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -37,7 +39,9 @@ app.use(cors({
       return callback(new Error(message), false); 
     }
     return callback(null, true);
-  }
+  },
+  allowedHeader: ['Content-Type', 'Authorization'],
+  credentials: true,
 }));
 
 let auth = require("./auth")(app);
