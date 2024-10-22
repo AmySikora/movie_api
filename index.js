@@ -107,6 +107,38 @@ app.post(
       });
   }
 );
+
+// Login route
+app.post('/login', (req, res) => {
+  const { Username, Password } = req.body;
+
+  // Find user by username
+  Users.findOne({ Username: Username }, (err, user) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error: ' + err);
+    }
+
+    if (!user) {
+      return res.status(400).send('User not found');
+    }
+
+    if (!user.validatePassword(Password)) {
+      return res.status(400).send('Invalid password');
+    }
+
+    // Generate a JWT token
+    const token = jwt.sign({ Username: user.Username, _id: user._id }, 'your_jwt_secret', {
+      subject: user.Username,
+      expiresIn: '7d',  // Token expires in 7 days
+      algorithm: 'HS256'
+    });
+
+    // Return the token to the client
+    return res.json({ user: user, token: token });
+  });
+});
+
 // Add a movie to a user's list of favorites in Mongoose
 app.post(
   "/users/:Username/movies/:MovieID",
