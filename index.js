@@ -22,27 +22,31 @@ check(
 ).isAlphanumeric();
 
 const cors = require("cors");
+
 let allowedOrigins = [
   "http://localhost:8080",
   "http://localhost:1234",
-  "https://myflixmovies123-d3669f5b95da.herokuapp.com/",
+  "https://myflixmovies123-d3669f5b95da.herokuapp.com",
   "https://myFlix-app-123.netlify.app",
-]; 
-s
-app.options('*', cors());
+];
 
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) { // If a specific origin isn't found on the list of allowed origins}
-      let message = 'The CORS policy for this application does not alllow access from origin ' + origin;
-      return callback(new Error(message), false); 
+    if (allowedOrigins.indexOf(origin) === -1) {
+      let message = 'The CORS policy for this application does not allow access from origin ' + origin;
+      return callback(new Error(message), false);
     }
     return callback(null, true);
   },
-  allowedHeader: ['Content-Type', 'Authorization'],
-  credentials: true,
+  credentials: true, 
+  optionsSuccessStatus: 200,  
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',  
+  allowedHeaders: ['Content-Type', 'Authorization'],  
 }));
+
+app.options('*', cors()); 
+
 
 let auth = require("./auth")(app);
 
