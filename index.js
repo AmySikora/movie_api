@@ -108,7 +108,7 @@ app.post(
   }
 );
 
-// Add this: LOGIN Route
+// Login route
 app.post('/login', (req, res) => {
   const { Username, Password } = req.body;
 
@@ -123,7 +123,6 @@ app.post('/login', (req, res) => {
       return res.status(400).send('User not found');
     }
 
-    // Check if password is correct
     if (!user.validatePassword(Password)) {
       return res.status(400).send('Invalid password');
     }
