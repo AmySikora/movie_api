@@ -1,4 +1,3 @@
-// Require necessary packages
 require("dotenv").config();
 const express = require("express"),
   morgan = require("morgan"),
@@ -14,7 +13,10 @@ const Movies = Models.Movie;
 const Users = Models.User;
 
 // Connect to MongoDB
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.CONNECTION_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 // Middleware configuration
 app.use(express.json());
@@ -30,23 +32,24 @@ const allowedOrigins = [
   "https://myFlix-app-123.netlify.app",
 ];
 
-app.use(cors({
+const corsOptions = {
   origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      let message = `CORS policy does not allow access from origin ${origin}`;
-      return callback(new Error(message), false);
+    if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS policy does not allow access from origin ${origin}`), false);
     }
-    return callback(null, true);
   },
   credentials: true,
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
 
 // Passport and Auth Configuration
-require("./passport"); 
-require("./auth")(app); 
+require("./passport");
+require("./auth")(app);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -56,7 +59,6 @@ app.use((err, req, res, next) => {
 
 // Routes
 
-// Welcome route
 app.get("/", (req, res) => {
   res.send("Welcome to myFlix!");
 });
@@ -74,24 +76,29 @@ app.post(
     let errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() });
 
-    let hashedPassword = Users.hashPassword(req.body.Password);
-    await Users.findOne({ Username: req.body.Username })
-      .then((user) => {
-        if (user) return res.status(400).send(`${req.body.Username} already exists`);
-        Users.create({
-          Username: req.body.Username,
-          Password: hashedPassword,
-          Email: req.body.Email,
-          Birthday: req.body.Birthday,
-        })
-          .then((user) => res.status(201).json(user))
-          .catch((error) => res.status(500).send("Error: " + error));
-      })
-      .catch((error) => res.status(500).send("Error: " + error));
+    try {
+      const hashedPassword = Users.hashPassword(req.body.Password);
+      const existingUser = await Users.findOne({ Username: req.body.Username });
+
+      if (existingUser) {
+        return res.status(400).send(`${req.body.Username} already exists`);
+      }
+
+      const newUser = await Users.create({
+        Username: req.body.Username,
+        Password: hashedPassword,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday,
+      });
+
+      res.status(201).json(newUser);
+    } catch (error) {
+      res.status(500).send("Error: " + error);
+    }
   }
 );
 
-// Login route using passport-local authentication
+// Login route
 app.post("/login", passport.authenticate("local", { session: false }), (req, res) => {
   const token = jwt.sign(
     { Username: req.user.Username, _id: req.user._id },
@@ -106,39 +113,45 @@ app.post(
   "/users/:Username/movies/:MovieID",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    await Users.findOneAndUpdate(
-      { Username: req.params.Username },
-      { $push: { FavoriteMovies: req.params.MovieID } },
-      { new: true }
-    )
-      .then((updatedUser) => res.json(updatedUser))
-      .catch((err) => res.status(500).send("Error: " + err));
+    try {
+      const updatedUser = await Users.findOneAndUpdate(
+        { Username: req.params.Username },
+        { $push: { FavoriteMovies: req.params.MovieID } },
+        { new: true }
+      );
+      res.json(updatedUser);
+    } catch (err) {
+      res.status(500).send("Error: " + err);
+    }
   }
 );
-
 // Remove a movie from user's favorites
 app.delete(
   "/users/:Username/movies/:MovieID",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    await Users.findOneAndUpdate(
-      { Username: req.params.Username },
-      { $pull: { FavoriteMovies: req.params.MovieID } },
-      { new: true }
-    )
-      .then((updatedUser) => res.json(updatedUser))
-      .catch((err) => res.status(500).send("Error: " + err));
+    try {
+      const updatedUser = await Users.findOneAndUpdate(
+        { Username: req.params.Username },
+        { $pull: { FavoriteMovies: req.params.MovieID } },
+        { new: true }
+      );
+      res.json(updatedUser);
+    } catch (err) {
+      res.status(500).send("Error: " + err);
+    }
   }
 );
 
 // Get all movies
 app.get("/movies", passport.authenticate("jwt", { session: false }), async (req, res) => {
-  await Movies.find()
-    .then((movies) => res.status(201).json(movies))
-    .catch((err) => res.status(500).send("Error: " + err));
+  try {
+    const movies = await Movies.find();
+    res.status(201).json(movies);
+  } catch (err) {
+    res.status(500).send("Error: " + err);
+  }
 });
-
-// Additional routes as in your existing code...
 
 // Start the server
 const port = process.env.PORT || 8080;
