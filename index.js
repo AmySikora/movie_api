@@ -45,8 +45,8 @@ app.use(cors({
 }));
 
 // Passport and Auth Configuration
-require("./passport"); // Configure passport strategies
-require("./auth")(app); // Attach login route with passport
+require("./passport"); 
+require("./auth")(app); 
 
 // Error handling middleware
 app.use((err, req, res, next) => {
