@@ -125,6 +125,7 @@ app.post(
     }
   }
 );
+
 // Remove a movie from user's favorites
 app.delete(
   "/users/:Username/movies/:MovieID",
