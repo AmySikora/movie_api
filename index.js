@@ -156,6 +156,38 @@ app.get("/movies", passport.authenticate("jwt", { session: false }), async (req,
   }
 });
 
+// Update user information
+app.put(
+  "/users/:Username",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      // Find the user by username and update the fields that are provided
+      const updatedUser = await Users.findOneAndUpdate(
+        { Username: req.params.Username },
+        {
+          $set: {
+            Username: req.body.Username,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday,
+            Password: req.body.Password ? Users.hashPassword(req.body.Password) : undefined,
+          },
+        },
+        { new: true, omitUndefined: true } // `omitUndefined` prevents undefined fields from being overwritten
+      );
+
+      if (!updatedUser) {
+        return res.status(404).send("User not found");
+      }
+
+      res.json(updatedUser);
+    } catch (error) {
+      console.error("Error updating user info:", error);
+      res.status(500).send("Error updating profile: " + error);
+    }
+  }
+);
+
 // Start the server
 const port = process.env.PORT || 8080;
 app.listen(port, "0.0.0.0", () => {
