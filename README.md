@@ -19,8 +19,6 @@
 - [Error Handling](#error-handling)
 - [Authentication](#authentication)
 - [Login](#login)
-- [Hosting](#hosting)
-- [Contributing](#contributing)
 - [License](#license)
 
 ### Overview
