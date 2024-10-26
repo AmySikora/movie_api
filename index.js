@@ -29,23 +29,25 @@ const allowedOrigins = [
   "http://localhost:8080",
   "http://localhost:1234",
   "https://myflixmovies123-d3669f5b95da.herokuapp.com",
-  "https://myFlix-app-123.netlify.app",
+  "https://myflix-app-123.netlify.app",
 ];
+
 
 const corsOptions = {
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
-      callback(null, true);
+      callback(null, true); 
     } else {
       callback(new Error(`CORS policy does not allow access from origin ${origin}`), false);
     }
   },
-  credentials: true,
+  credentials: true, 
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 app.use(cors(corsOptions));
+
 
 // Passport and Auth Configuration
 require("./passport");
