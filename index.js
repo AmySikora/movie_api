@@ -32,7 +32,6 @@ const allowedOrigins = [
   "https://myflix-app-123.netlify.app",
 ];
 
-
 const corsOptions = {
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
@@ -47,7 +46,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
 
 // Passport and Auth Configuration
 require("./passport");
