@@ -20,19 +20,7 @@
 - [Authentication](#authentication)
 - [Login](#login)
 - [License](#license)
-
-### Overview
-
-MyFlix is a movie app built with Node.js and Express that provides information about various movies through API endpoints. Users can sign up, log in, add movies to their favorites, and access detailed information about each movie.
-
-Once the server is running, you can access the app in your browser at `http://localhost:8080`.
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone [myFlix-client](https://github.com/AmySikora/myFlix-client)
-
+- 
 Prerequisites
 Node.js
 MongoDB Atlas account or a local MongoDB instance
