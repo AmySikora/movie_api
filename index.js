@@ -188,6 +188,23 @@ app.put(
   }
 );
 
+// Delete a user by username
+app.delete(
+  "/users/:Username",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const user = await Users.findOneAndDelete({ Username: req.params.Username });
+      if (!user) {
+        return res.status(404).send(`${req.params.Username} was not found`);
+      }
+      res.status(200).send(`${req.params.Username} was deleted.`);
+    } catch (err) {
+      res.status(500).send("Error: " + err);
+    }
+  }
+);
+
 // Start the server
 const port = process.env.PORT || 8080;
 app.listen(port, "0.0.0.0", () => {
