@@ -3,11 +3,11 @@ import pluginJs from "@eslint/js";
 
 export default [
   {
-    files: ["**/*.js"],
+    files: ["**/*.js", "**/*.jsx"], // Include both .js and .jsx files
     languageOptions: {
       sourceType: "commonjs",
       ecmaVersion: "latest",
-      globals: globals.node, // Use Node.js globals
+      globals: globals.node,
     },
   },
   pluginJs.configs.recommended,
