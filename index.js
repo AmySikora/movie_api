@@ -18,11 +18,13 @@ mongoose.connect(process.env.CONNECTION_URI, {
   useUnifiedTopology: true,
 });
 
+// Middleware configuration
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("common"));
 app.use(express.static("public"));
 
+// CORS configuration
 const allowedOrigins = [
   "http://localhost:8080",
   "http://localhost:1234",
@@ -45,18 +47,17 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-
+// Passport and Auth Configuration
 require("./passport");
 require("./auth")(app);
 
-
+// Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something went wrong!");
 });
 
 // Routes
-
 app.get("/", (req, res) => {
   res.send("Welcome to myFlix!");
 });
