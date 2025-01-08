@@ -41,11 +41,12 @@ const corsOptions = {
     }
   },
   credentials: true, 
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  allowedHeaders: ["Content-Type", "Authorization"],
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
 };
 
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); 
 
 // Passport and Auth Configuration
 require("./passport");
