@@ -41,9 +41,20 @@ const corsOptions = {
     }
   },
   credentials: true, 
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
   allowedHeaders: ["Content-Type", "Authorization"],
 };
+
+// Added headers to help with Angular
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", req.headers.origin || "*");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+  next();
+});
 
 app.use(cors(corsOptions));
 
@@ -150,6 +161,16 @@ app.get("/movies", passport.authenticate("jwt", { session: false }), async (req,
     res.status(201).json(movies);
   } catch (err) {
     res.status(500).send("Error: " + err);
+  }
+});
+
+// Get user route
+app.get('/users', async (req, res) => {
+  try {
+    const users = await Users.find(); 
+    res.status(200).json(users); 
+  } catch (error) {
+    res.status(500).send('Error: ' + error); 
   }
 });
 
