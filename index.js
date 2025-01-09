@@ -36,13 +36,13 @@ const allowedOrigins = [
 
 const corsOptions = {
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
-      callback(null, true); 
+    if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== "production") {
+      callback(null, true);
     } else {
       callback(new Error(`CORS policy does not allow access from origin ${origin}`), false);
     }
   },
-  credentials: true, 
+  credentials: true,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   allowedHeaders: ["Content-Type", "Authorization"],
 };
@@ -94,8 +94,8 @@ app.post(
 
       res.status(201).json({
         message: "You have successfully registered!",
-        User: newUser,
-    });
+        User: newUser
+      });
     } catch (error) {
       res.status(500).send("Error: " + error);
     }
@@ -152,19 +152,19 @@ app.delete(
 app.get("/movies", passport.authenticate("jwt", { session: false }), async (req, res) => {
   try {
     const movies = await Movies.find();
-    res.status(201).json(movies);
+    res.status(200).json(movies);
   } catch (err) {
     res.status(500).send("Error: " + err);
   }
 });
 
 // Users route
-app.get('/users', async (req, res) => {
+app.get("/users", async (req, res) => {
   try {
-    const users = await Users.find(); 
-    res.status(200).json(users); 
+    const users = await Users.find();
+    res.status(200).json(users);
   } catch (error) {
-    res.status(500).send('Error: ' + error);
+    res.status(500).send("Error: " + error);
   }
 });
 
