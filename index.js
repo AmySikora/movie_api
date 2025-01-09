@@ -1,32 +1,32 @@
-require("dotenv").config();
-const express = require("express"),
-  morgan = require("morgan"),
-  mongoose = require("mongoose"),
-  Models = require("./models.js"),
-  passport = require("passport"),
-  { check, validationResult } = require("express-validator"),
-  jwt = require("jsonwebtoken"),
-  cors = require("cors");
+import express, { json, urlencoded } from "express";
+import morgan from "morgan";
+import mongoose from "mongoose";
+import { Movie, User } from "./models.js";
+import { authenticate } from "passport";
+import { check, validationResult } from "express-validator";
+import { sign } from "jsonwebtoken";
+import cors from "cors";
+
+// MongoDB Connection
+mongoose
+  .connect(process.env.CONNECTION_URI)
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((error) => console.error("Error connecting to MongoDB:", error));
 
 const app = express();
-const Movies = Models.Movie;
-const Users = Models.User;
-
-// Connect to MongoDB
-mongoose.connect(process.env.CONNECTION_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const Movies = Movie;
+const Users = User;
 
 // Middleware configuration
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(json());
+app.use(urlencoded({ extended: true }));
 app.use(morgan("common"));
 app.use(express.static("public"));
 
-// CORS configuration
+// CORS Configuration
 const allowedOrigins = [
   "http://localhost:8080",
+  "http://localhost:4200",
   "http://localhost:1234",
   "https://myflixmovies123-d3669f5b95da.herokuapp.com",
   "https://myflix-app-123.netlify.app",
@@ -34,46 +34,33 @@ const allowedOrigins = [
 
 const corsOptions = {
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
-      callback(null, true); 
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
     } else {
       callback(new Error(`CORS policy does not allow access from origin ${origin}`), false);
     }
   },
-  credentials: true, 
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
-  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
 };
-
-// Added headers to help with Angular
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", req.headers.origin || "*");
-  res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
-  next();
-});
-
 app.use(cors(corsOptions));
 
 // Passport and Auth Configuration
-require("./passport");
+import "./passport";
 require("./auth")(app);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send("Something went wrong!");
+  const responseMessage = process.env.NODE_ENV === 'production' 
+    ? "Internal Server Error" 
+    : err.message;
+  res.status(500).send(responseMessage);
 });
 
 // Routes
-app.get("/", (req, res) => {
-  res.send("Welcome to myFlix!");
-});
+app.get("/", (req, res) => res.send("Welcome to myFlix!"));
 
-// User registration route
+// User Registration
 app.post(
   "/users",
   [
@@ -83,16 +70,14 @@ app.post(
     check("Email", "Email does not appear to be valid").isEmail(),
   ],
   async (req, res) => {
-    let errors = validationResult(req);
+    const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() });
 
     try {
+      console.log("Registering user:", req.body.Username);
       const hashedPassword = Users.hashPassword(req.body.Password);
-      const existingUser = await Users.findOne({ Username: req.body.Username });
-
-      if (existingUser) {
-        return res.status(400).send(`${req.body.Username} already exists`);
-      }
+      const userExists = await Users.findOne({ Username: req.body.Username });
+      if (userExists) return res.status(400).send("User already exists.");
 
       const newUser = await Users.create({
         Username: req.body.Username,
@@ -103,14 +88,15 @@ app.post(
 
       res.status(201).json(newUser);
     } catch (error) {
-      res.status(500).send("Error: " + error);
+      console.error("Error:", error);
+      res.status(500).send("An unexpected error occurred. Please try again.");
     }
   }
 );
 
-// Login route
-app.post("/login", passport.authenticate("local", { session: false }), (req, res) => {
-  const token = jwt.sign(
+// Login Route
+app.post("/login", authenticate("local", { session: false }), (req, res) => {
+  const token = sign(
     { Username: req.user.Username, _id: req.user._id },
     process.env.JWT_SECRET || "your_jwt_secret",
     { subject: req.user.Username, expiresIn: "7d", algorithm: "HS256" }
@@ -121,7 +107,7 @@ app.post("/login", passport.authenticate("local", { session: false }), (req, res
 // Add a movie to user's favorites
 app.post(
   "/users/:Username/movies/:MovieID",
-  passport.authenticate("jwt", { session: false }),
+  authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
       const updatedUser = await Users.findOneAndUpdate(
@@ -139,7 +125,7 @@ app.post(
 // Remove a movie from user's favorites
 app.delete(
   "/users/:Username/movies/:MovieID",
-  passport.authenticate("jwt", { session: false }),
+  authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
       const updatedUser = await Users.findOneAndUpdate(
@@ -155,26 +141,16 @@ app.delete(
 );
 
 // Get all movies
-app.get("/movies", passport.authenticate("jwt", { session: false }), async (req, res) => {
+app.get("/movies", authenticate("jwt", { session: false }), async (req, res) => {
   try {
     const movies = await Movies.find();
-    res.status(201).json(movies);
+    res.status(200).json(movies);
   } catch (err) {
     res.status(500).send("Error: " + err);
   }
 });
 
 // Get user route
-app.get('/users', async (req, res) => {
-  try {
-    const users = await Users.find(); // Fetch all users from the database
-    res.status(200).json(users); // Send the list of users as a JSON response
-  } catch (error) {
-    res.status(500).send('Error: ' + error); // Handle any errors
-  }
-});
-
-// Get users route added
 app.get('/users', async (req, res) => {
   try {
     const users = await Users.find(); 
@@ -184,10 +160,11 @@ app.get('/users', async (req, res) => {
   }
 });
 
+
 // Update user information
 app.put(
   "/users/:Username",
-  passport.authenticate("jwt", { session: false }),
+  authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
       const updatedUser = await Users.findOneAndUpdate(
@@ -218,7 +195,7 @@ app.put(
 // Delete a user by username
 app.delete(
   "/users/:Username",
-  passport.authenticate("jwt", { session: false }),
+  authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
       const user = await Users.findOneAndDelete({ Username: req.params.Username });
