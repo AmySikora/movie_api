@@ -29,6 +29,7 @@ const allowedOrigins = [
   "http://localhost:8080",
   "http://localhost:1234",
   "http://localhost:4200",
+  "http://localhost:54065",
   "https://myflixmovies123-d3669f5b95da.herokuapp.com",
   "https://myflix-app-123.netlify.app",
 ];
@@ -91,7 +92,10 @@ app.post(
         Birthday: req.body.Birthday,
       });
 
-      res.status(201).json(newUser);
+      res.status(201).json({
+        message: "You have successfully registered!",
+        User: newUser,
+    });
     } catch (error) {
       res.status(500).send("Error: " + error);
     }
