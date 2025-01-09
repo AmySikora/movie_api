@@ -28,7 +28,7 @@ app.use(express.static("public"));
 const allowedOrigins = [
   "http://localhost:8080",
   "http://localhost:1234",
-  "http://localhost:4020",
+  "http://localhost:4200",
   "https://myflixmovies123-d3669f5b95da.herokuapp.com",
   "https://myflix-app-123.netlify.app",
 ];
