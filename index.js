@@ -167,6 +167,16 @@ app.get("/movies", passport.authenticate("jwt", { session: false }), async (req,
 // Get user route
 app.get('/users', async (req, res) => {
   try {
+    const users = await Users.find(); // Fetch all users from the database
+    res.status(200).json(users); // Send the list of users as a JSON response
+  } catch (error) {
+    res.status(500).send('Error: ' + error); // Handle any errors
+  }
+});
+
+// Get user route
+app.get('/users', async (req, res) => {
+  try {
     const users = await Users.find(); 
     res.status(200).json(users); 
   } catch (error) {
