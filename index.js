@@ -174,7 +174,7 @@ app.get('/users', async (req, res) => {
   }
 });
 
-// Get user route
+// Get users route added
 app.get('/users', async (req, res) => {
   try {
     const users = await Users.find(); 
