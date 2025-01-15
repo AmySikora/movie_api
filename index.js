@@ -30,7 +30,7 @@ const allowedOrigins = [
   "http://localhost:1234",
   "http://localhost:4200",
   "http://localhost:54065",
-  "https://amysikora.github.io/myFlix-Angular-client/welcome",
+  "https://amysikora.github.io/myFlix-Angular-client/",
   "https://myflixmovies123-d3669f5b95da.herokuapp.com",
   "https://myflix-app-123.netlify.app",
 ];
