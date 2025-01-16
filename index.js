@@ -23,7 +23,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("common"));
 app.use(express.static("public"));
-app.options("*", cors(corsOptions));
 
 // CORS configuration
 const allowedOrigins = [
@@ -31,12 +30,10 @@ const allowedOrigins = [
   "http://localhost:1234",
   "http://localhost:4200",
   "http://localhost:54065",
-  "https://amysikora.github.io", // Base GitHub Page
-  "https://amysikora.github.io/myFlix-Angular-client", 
+  "https://amysikora.github.io/myFlix-Angular-client",
   "https://myflixmovies123-d3669f5b95da.herokuapp.com",
   "https://myflix-app-123.netlify.app",
 ];
-
 
 const corsOptions = {
   origin: (origin, callback) => {
