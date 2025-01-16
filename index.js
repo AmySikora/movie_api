@@ -48,7 +48,7 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 
-app.options("*", cors(corsOptions));
+app.use(cors(corsOptions));
 
 // Passport and Auth Configuration
 require("./passport");
