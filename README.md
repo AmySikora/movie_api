@@ -1,6 +1,6 @@
 # MyFlix Backend API
 
-Welcome to the **myFlix Backend API**, the server-side of a movie app where you can explore a wide variety of movies, manage user profiles, and maintain favorite movie lists. This API is designed to be simple, efficient, and secure.
+Welcome to the **myFlix Backend API**, the server-side of a movie app where you can explore a variety of movies, manage your user profile, and maintain a favorite movie lists. This API is designed to be simple, efficient, and secure.
 
 ## Table of Contents
 
