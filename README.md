@@ -1,47 +1,33 @@
-# myFlix API
+# MyFlix DB
 
-## Overview
-The **myFlix API** is the backend component of the **myFlix** web application, designed for movie enthusiasts. This RESTful API provides access to a database of movies, directors, and genres, allowing users to manage their personal profiles and favorite movie lists.
+A movie API system providing movie and user management with features like authentication and data validation.
 
----
+## Table of Contents
 
-## 🌟 Features
-### Movies
-- Retrieve a list of ALL movies.
-- Get detailed information about a single movie, including description, genre, director, image URL, and featured status.
-- Get genre details by name (e.g., "Thriller").
-- Get director details, including bio, birth year, and death year.
+- [Features](#features)
+- [Technologies](#technologies)
+- [Setup](#setup)
+- [API Endpoints](#api-endpoints)
+- [Usage](#usage)
+- [License](#license)
 
-### Users
-- Register new users with a username, password, email, and date of birth.
-- Update user information (username, password, email, and date of birth).
-- Add movies to a user’s favorite list.
-- Remove movies from a user’s favorite list.
-- Deregister (delete) a user account.
+## Features
 
----
+- **Movies API**: Access movie details.
+- **User Management**: Manage users and their favorite movies.
+- **Authentication**: JWT-based security.
+- **Data Validation**: Ensures data integrity.
 
-## 📖 User Stories
-- **As a user**, I want to receive information about movies, directors, and genres so I can learn more about movies I’ve watched or am interested in.
-- **As a user**, I want to create a profile to save data about my favorite movies.
+## Technologies
 
----
+- **Express.js**: Node.js web framework.
+- **MongoDB**: NoSQL database.
+- **Mongoose**: MongoDB ODM.
+- **Passport.js**: Authentication middleware.
+- **Cors**: Cross-Origin Resource Sharing middleware.
+- **Bcrypt**: Password hashing.
 
-## 🛠️ Technical Details
-- **Architecture**: RESTful API
-- **Frameworks**: Node.js, Express.js
-- **Database**: MongoDB with Mongoose modeling
-- **Middleware**: Includes `body-parser`, `morgan`, `cors`, and others
-- **Data Format**: JSON
-- **Authentication**: Secure endpoints with Passport.js and JWT (JSON Web Tokens)
-- **Validation**: User input validation with `express-validator`
-- **Error Handling**: Comprehensive error responses for robust API usage
-- **Testing**: Tested with Postman
-- **Deployment**: Hosted on Heroku, source code on GitHub
-
----
-
-## 🚀 Installation
+## Setup
 
 ### Prerequisites
 - Node.js and npm installed
@@ -68,45 +54,27 @@ The **myFlix API** is the backend component of the **myFlix** web application, d
    ```
 5. Access the API at `http://localhost:8080` (default port).
 
----
+## API Endpoints
 
-## 🌐 API Endpoints
-
-### Movie Endpoints
+### Movies
 - **GET /movies**: Retrieve a list of all movies.
-- **GET /movies/:title**: Get details about a single movie by title.
-- **GET /genres/:name**: Get details about a genre by name.
-- **GET /directors/:name**: Get details about a director by name.
+- **GET /movies/:title**: Get details about a movie by title.
+- **GET /genres/:name**: Get movies by genre.
+- **GET /directors/:name**: Get a director by name.
 
-### User Endpoints
-- **POST /users**: Register a new user.
-- **PUT /users/:username**: Update user information.
-- **POST /users/:username/movies/:movieId**: Add a movie to a user's favorite list.
-- **DELETE /users/:username/movies/:movieId**: Remove a movie from a user's favorite list.
-- **DELETE /users/:username**: Deregister a user.
+### Users
+- **GET /users**: Get all users.
+- **POST /users**: Create a user.
+- **PUT /users/:username**: Update a user.
+- **DELETE /users/:username**: Delete a user.
+- **POST /users/:username/movies/:MovieID**: Add a movie to favorites.
+- **DELETE /users/:username/movies/:MovieID**: Remove a movie from favorites.
 
----
+## Usage
 
-## 🔧 Design Criteria
-This project adheres to the following technical and design standards:
-- **Middleware**: Use at least three middleware modules, including logging and data parsing.
-- **Security**: Implement authentication, authorization, and secure data storage.
-- **Testing**: Ensure all endpoints are tested using tools like Postman.
-- **Deployment**: Deploy API to Heroku for public access.
+Explore the API at `http://localhost:8080/docs` once the server is running.
 
----
+## License
 
-## ✨ Acknowledgements
-This project is part of the Achievement 2 milestone in the Full-Stack JavaScript development program. The next step will be building the client-side of **myFlix** using React, completing the full-stack MERN application.
-
----
-
-## 📄 License
-This project is licensed under the MIT License.
-
----
-
-## 📬 Contact
-For questions or feedback, feel free to reach out:
-- **GitHub**: [amysikora](https://github.com/amysikora)
+MIT License - see the LICENSE file for details.
 
