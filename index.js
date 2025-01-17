@@ -61,11 +61,57 @@ app.use((err, req, res, next) => {
 });
 
 // Routes
+
+/**
+ * @name GET /
+ * @summary Welcome message
+ * @description Returns a simple welcome message for the API.
+ * @returns {string} 200 - A welcome message
+ */
 app.get("/", (req, res) => {
   res.send("Welcome to myFlix!");
 });
-
-// User registration route
+/**
+ * @name POST /users
+ * @summary Register a new user
+ * @description Creates a new user account.
+ * 
+ * @example request body
+ * {
+ *   "Username": "jane_doe",
+ *   "Password": "Password123!",
+ *   "Email": "jane.doe@example.com",
+ *   "Birthday": "1995-10-25T00:00:00.000Z"
+ * }
+ *
+ * @example response - 201 - Success Response
+ * {
+ *   "message": "You have successfully registered!",
+ *   "User": {
+ *     "_id": "5f8f8f8f8f8f8f8f8f8f8f8f",
+ *     "Username": "jane_doe",
+ *     "Email": "jane.doe@example.com",
+ *     "Birthday": "1995-10-25T00:00:00.000Z",
+ *     "FavoriteMovies": []
+ *   }
+ * }
+ *
+ * @example response - 422 - Validation Error Response
+ * {
+ *   "errors": [
+ *     { "Username": "Username is required" },
+ *     { "Username": "Username contains non-alphanumeric characters - not allowed." },
+ *     { "Password": "Password is required" },
+ *     { "Email": "Email does not appear to be valid" }
+ *   ]
+ * }
+ *
+ * @example response - 400 - Username Exists Error
+ * "jane_doe already exists"
+ *
+ * @example response - 500 - Server Error
+ * "Error: Something went wrong."
+ */
 app.post(
   "/users",
   [
@@ -103,6 +149,29 @@ app.post(
   }
 );
 
+/**
+ * @name POST /login
+ * @summary Login a user
+ * @description Authenticates a user and returns a JWT token.
+ * 
+ * @example request body
+ * {
+ *   "Username": "jane_doe",
+ *   "Password": "Password123!"
+ * }
+ * 
+ * @example response - 200 - Success Response
+ * {
+ *   "user": {
+ *     "_id": "5f8f8f8f8f8f8f8f8f8f8f8f",
+ *     "Username": "jane_doe"
+ *   },
+ *   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ * }
+ *
+ * @example response - 401 - Authentication Error
+ * "Invalid username or password."
+ */
 // Login route
 app.post("/login", passport.authenticate("local", { session: false }), (req, res) => {
   const token = jwt.sign(
@@ -113,7 +182,26 @@ app.post("/login", passport.authenticate("local", { session: false }), (req, res
   return res.json({ user: req.user, token: token });
 });
 
-// Add a movie to user's favorites
+/**
+ * @name POST /users/{Username}/movies/{MovieID}
+ * @summary Add a movie to favorites
+ * @description Adds a movie to the user's favorite movies list.
+ * 
+ * @example request URL
+ * POST /users/jane_doe/movies/60f5b1c8c45e4c1b8c6f5678
+ * 
+ * @example response - 200 - Success Response
+ * {
+ *   "User": {
+ *     "_id": "5f8f8f8f8f8f8f8f8f8f8f8f",
+ *     "Username": "jane_doe",
+ *     "FavoriteMovies": ["60f5b1c8c45e4c1b8c6f5678"]
+ *   }
+ * }
+ * 
+ * @example response - 500 - Server Error
+ * "Error: Something went wrong."
+ */
 app.post(
   "/users/:Username/movies/:MovieID",
   passport.authenticate("jwt", { session: false }),
@@ -131,7 +219,26 @@ app.post(
   }
 );
 
-// Remove a movie from user's favorites
+/**
+ * @name DELETE /users/{Username}/movies/{MovieID}
+ * @summary Remove a movie from favorites
+ * @description Removes a movie from the user's favorite list.
+ * 
+ * @example request URL
+ * DELETE /users/jane_doe/movies/60f5b1c8c45e4c1b8c6f5678
+ * 
+ * @example response - 200 - Success Response
+ * {
+ *   "User": {
+ *     "_id": "5f8f8f8f8f8f8f8f8f8f8f8f",
+ *     "Username": "jane_doe",
+ *     "FavoriteMovies": []
+ *   }
+ * }
+ * 
+ * @example response - 500 - Server Error
+ * "Error: Something went wrong."
+ */
 app.delete(
   "/users/:Username/movies/:MovieID",
   passport.authenticate("jwt", { session: false }),
@@ -149,7 +256,27 @@ app.delete(
   }
 );
 
-// Get all movies
+/**
+ * @name GET /movies
+ * @summary Retrieve all movies
+ * @description Returns a list of all movies.
+ * 
+ * @example response - 200 - Success Response
+ * [
+ *   {
+ *     "_id": "60f5b1c8c45e4c1b8c6f5678",
+ *     "Title": "The Shawshank Redemption",
+ *     "Description": "A movie about hope and friendship in a prison.",
+ *     "Genre": { "Name": "Drama", "Description": "Dramatic movies." },
+ *     "Director": { "Name": "Frank Darabont", "Bio": "An acclaimed director." },
+ *     "ImagePath": "https://example.com/shawshank.jpg",
+ *     "Featured": true
+ *   }
+ * ]
+ * 
+ * @example response - 500 - Server Error
+ * "Error: Something went wrong."
+ */
 app.get("/movies", passport.authenticate("jwt", { session: false }), async (req, res) => {
   try {
     const movies = await Movies.find();
@@ -169,7 +296,29 @@ app.get("/users", async (req, res) => {
   }
 });
 
-// Update user information
+/**
+ * @name PUT /users/{Username}
+ * @summary Update user information
+ * @description Updates the user's account information, including username, email, and birthday.
+ * 
+ * @example request body
+ * {
+ *   "Username": "jane_doe",
+ *   "Email": "jane.doe@example.com",
+ *   "Birthday": "1990-05-15T00:00:00.000Z"
+ * }
+ * 
+ * @example response - 200 - Success Response
+ * {
+ *   "_id": "60f5b1c8c45e4c1b8c6f5678",
+ *   "Username": "jane_doe",
+ *   "Email": "jane.doe@example.com",
+ *   "Birthday": "1990-05-15T00:00:00.000Z"
+ * }
+ * 
+ * @example response - 500 - Server Error
+ * "Error: Something went wrong."
+ */
 app.put(
   "/users/:Username",
   passport.authenticate("jwt", { session: false }),
@@ -200,7 +349,20 @@ app.put(
   }
 );
 
-// Delete a user by username
+/**
+ * @name DELETE /users/{Username}
+ * @summary Delete a user
+ * @description Deletes a user account.
+ * 
+ * @example response - 200 - Success Response
+ * "jane_doe was deleted."
+ * 
+ * @example response - 404 - Not Found Error
+ * "jane_doe was not found."
+ * 
+ * @example response - 500 - Server Error
+ * "Error: Something went wrong."
+ */
 app.delete(
   "/users/:Username",
   passport.authenticate("jwt", { session: false }),
