@@ -1,24 +1,51 @@
-# Movie API
+# myFlix API
 
-Welcome to the **Movie API**! This API allows users to manage movie data, register and authenticate users, and perform various actions related to user accounts and favorite movies. Below, you'll find a comprehensive guide to using the API.
-
----
-
-## Features
-- User registration and authentication with JWT.
-- CRUD operations for user accounts.
-- Manage user favorite movies.
-- Retrieve details about movies, including genres and directors.
-- Built with Express.js and MongoDB.
+## Overview
+The **myFlix API** is the backend component of the **myFlix** web application, designed for movie enthusiasts. This RESTful API provides access to a database of movies, directors, and genres, allowing users to manage their personal profiles and favorite movie lists.
 
 ---
 
-## Installation
+## 🌟 Features
+### Movies
+- Retrieve a list of ALL movies.
+- Get detailed information about a single movie, including description, genre, director, image URL, and featured status.
+- Get genre details by name (e.g., "Thriller").
+- Get director details, including bio, birth year, and death year.
+
+### Users
+- Register new users with a username, password, email, and date of birth.
+- Update user information (username, password, email, and date of birth).
+- Add movies to a user’s favorite list.
+- Remove movies from a user’s favorite list.
+- Deregister (delete) a user account.
+
+---
+
+## 📖 User Stories
+- **As a user**, I want to receive information about movies, directors, and genres so I can learn more about movies I’ve watched or am interested in.
+- **As a user**, I want to create a profile to save data about my favorite movies.
+
+---
+
+## 🛠️ Technical Details
+- **Architecture**: RESTful API
+- **Frameworks**: Node.js, Express.js
+- **Database**: MongoDB with Mongoose modeling
+- **Middleware**: Includes `body-parser`, `morgan`, `cors`, and others
+- **Data Format**: JSON
+- **Authentication**: Secure endpoints with Passport.js and JWT (JSON Web Tokens)
+- **Validation**: User input validation with `express-validator`
+- **Error Handling**: Comprehensive error responses for robust API usage
+- **Testing**: Tested with Postman
+- **Deployment**: Hosted on Heroku, source code on GitHub
+
+---
+
+## 🚀 Installation
 
 ### Prerequisites
-- Node.js (v16 or higher recommended)
-- npm (Node Package Manager)
-- MongoDB database (e.g., MongoDB Atlas)
+- Node.js and npm installed
+- MongoDB database setup (e.g., MongoDB Atlas)
 
 ### Steps
 1. Clone the repository:
@@ -30,13 +57,11 @@ Welcome to the **Movie API**! This API allows users to manage movie data, regist
    ```bash
    npm install
    ```
-3. Set up environment variables:
-   - Create a `.env` file in the root directory.
-   - Add the following variables:
-     ```env
-     CONNECTION_URI=your_mongodb_connection_string
-     JWT_SECRET=your_jwt_secret
-     ```
+3. Create a `.env` file and add the following variables:
+   ```env
+   CONNECTION_URI=your_mongodb_connection_string
+   JWT_SECRET=your_jwt_secret
+   ```
 4. Start the server:
    ```bash
    npm start
@@ -45,87 +70,43 @@ Welcome to the **Movie API**! This API allows users to manage movie data, regist
 
 ---
 
-## API Documentation
-The API documentation is auto-generated using **JSDoc**. To view the documentation:
+## 🌐 API Endpoints
 
-1. Install JSDoc globally (if not already installed):
-   ```bash
-   npm install -g jsdoc
-   ```
-2. Generate the documentation:
-   ```bash
-   jsdoc index.js
-   ```
-3. Open the `out/index.html` file in a web browser to explore the API details.
+### Movie Endpoints
+- **GET /movies**: Retrieve a list of all movies.
+- **GET /movies/:title**: Get details about a single movie by title.
+- **GET /genres/:name**: Get details about a genre by name.
+- **GET /directors/:name**: Get details about a director by name.
 
----
-
-## Endpoints
-
-### **User Endpoints**
-#### `POST /users`
-- **Description**: Register a new user.
-- **Example Request Body**:
-  ```json
-  {
-    "Username": "jane_doe",
-    "Password": "Password123!",
-    "Email": "jane.doe@example.com",
-    "Birthday": "1995-10-25"
-  }
-  ```
-
-#### `POST /login`
-- **Description**: Authenticate a user and return a JWT token.
-- **Example Request Body**:
-  ```json
-  {
-    "Username": "jane_doe",
-    "Password": "Password123!"
-  }
-  ```
-
-#### `PUT /users/:Username`
-- **Description**: Update user account information.
-
-#### `DELETE /users/:Username`
-- **Description**: Delete a user account.
+### User Endpoints
+- **POST /users**: Register a new user.
+- **PUT /users/:username**: Update user information.
+- **POST /users/:username/movies/:movieId**: Add a movie to a user's favorite list.
+- **DELETE /users/:username/movies/:movieId**: Remove a movie from a user's favorite list.
+- **DELETE /users/:username**: Deregister a user.
 
 ---
 
-### **Movie Endpoints**
-#### `GET /movies`
-- **Description**: Retrieve a list of all movies.
-
-#### `POST /users/:Username/movies/:MovieID`
-- **Description**: Add a movie to a user's favorite movies list.
-
-#### `DELETE /users/:Username/movies/:MovieID`
-- **Description**: Remove a movie from a user's favorite movies list.
+## 🔧 Design Criteria
+This project adheres to the following technical and design standards:
+- **Middleware**: Use at least three middleware modules, including logging and data parsing.
+- **Security**: Implement authentication, authorization, and secure data storage.
+- **Testing**: Ensure all endpoints are tested using tools like Postman.
+- **Deployment**: Deploy API to Heroku for public access.
 
 ---
 
-## Technologies Used
-- **Backend**: Node.js, Express.js
-- **Database**: MongoDB (Mongoose ODM)
-- **Authentication**: Passport.js, JWT
-- **Documentation**: JSDoc
+## ✨ Acknowledgements
+This project is part of the Achievement 2 milestone in the Full-Stack JavaScript development program. The next step will be building the client-side of **myFlix** using React, completing the full-stack MERN application.
 
 ---
 
-## Acknowledgements
-- API documentation generated with **JSDoc**.
-- Inspired by coursework and personal projects.
-
----
-
-## License
+## 📄 License
 This project is licensed under the MIT License.
 
 ---
 
-## Contact
+## 📬 Contact
 For questions or feedback, feel free to reach out:
-- GitHub: [amysikora](https://github.com/amysikora)
-
+- **GitHub**: [amysikora](https://github.com/amysikora)
 
