@@ -1,211 +1,169 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>myFlix API</title>
-    <link rel="stylesheet" href="css/styles.css">
-</head>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
 
-<body>
-
+  <body>
     <h1>Welcome to myFlix API</h1>
-    <h3>This project builds the server-side component of a “movies” web application.</h3>
-    <p>The web application provides users access to information about different movies, directors, and genres. Users
-        will be able to sign up, update their personal information, create a list of their favorite movies, remove
-        movies from their favorites list, and remove their user ID.</p>
+    <h3>
+      This project builds the server-side component of a “movies” web
+      application.
+    </h3>
+    <p>
+      The web application provides users access to information about different
+      movies, directors, and genres. Users will be able to sign up, update their
+      personal information, create a list of their favorite movies, remove
+      movies from their favorites list, and remove their user ID.
+    </p>
 
     <h2>Documentation of Endpoints</h2>
     <table border="1" cellpadding="10" cellspacing="0">
-        <thead>
-            <tr>
-                <th>Business Logic</th>
-                <th>URL</th>
-                <th>HTTP Method</th>
-                <th>Request Body Data Format with Examples</th>
-                <th>Response Body Data Format with Examples</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Return a list of ALL movies to the user</td>
-                <td>/movies</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>
-                    <code>
-                        {
-                            "Title": "The Shawshank Redemption",
-                            "Description": "The Shawshank Redemption is a 1994 American prison drama film...",
-                            "Genre": {
-                                "Name": "Drama",
-                                "Description": "In film and television, drama is a category or genre..."
-                            },
-                            "Director": {
-                                "Name": "Frank Darabont",
-                                "Bio": "Frank Árpád Darabont is an American screenwriter, director, and producer...",
-                                "Birth": "January 28, 1959"
-                            },
-                            "ImageURL": "https://en.wikipedia.org/wiki/File:ShawshankRedemptionMoviePoster.jpg",
-                            "Featured": false
-                        }
-                    </code>
-                </td>
-            </tr>
-            <tr>
-                <td>Return data about a single movie by title</td>
-                <td>/movies/:title</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>
-                    <code>
-                        {
-                            "Title": "Pulp Fiction",
-                            "Description": "Pulp Fiction is a 1994 American independent crime film...",
-                            "Genre": {
-                                "Name": "Crime Film",
-                                "Description": "Crime films, in the broadest sense, is a film genre..."
-                            },
-                            "Director": {
-                                "Name": "Quentin Tarantino",
-                                "Bio": "Quentin Jerome Tarantino is an American filmmaker and actor...",
-                                "Birth": "March 27, 1963"
-                            },
-                            "ImageURL": "https://upload.wikimedia.org/wikipedia/en/3/3b/Pulp_Fiction_%281994%29_poster.jpg",
-                            "Featured": false
-                        }
-                    </code>
-                </td>
-            </tr>
-            <tr>
-                <td>Return data about a genre by name/title</td>
-                <td>/movies/genre/:genreName</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>
-                    <code>
-                        {
-                            "Name": "Drama",
-                            "Description": "In film and television, drama is a category or genre..."
-                        }
-                    </code>
-                </td>
-            </tr>
-            <tr>
-                <td>Return data about a director by name</td>
-                <td>/movies/director/:directorName</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>
-                    <code>
-                        {
-                            "Name": "Frank Darabont",
-                            "Bio": "Frank Árpád Darabont is an American screenwriter, director, and producer...",
-                            "Birth": "January 28, 1959"
-                        }
-                    </code>
-                </td>
-            </tr>
-            <tr>
-                <td>Allow new users to register</td>
-                <td>/users</td>
-                <td>Post</td>
-                <td>
-                    <code>
-                        {
-                            "Username": "Alphanumericonly",
-                            "Password": "Password",
-                            "Email": "email@mail.com",
-                            "Birthday": "YYYY-MM-DD"
-                        }
-                    </code>
-                </td>
-                <td>
-                    <code>
-                        {
-                            _id: "66c8ef5565afdbe0a51488f0",
-                            "Username": "Alphanumericonly,
-                            "Password": "hashedPassword",
-                            "Email": "emaile@mail.com",
-                            "Birthday": "YYYY-MM-DD"
-                            "favoriteMovies": [],
-                        }
-                    </code>
-                </td>
-            </tr>
-            <tr>
-                <td>Allow users to update their username</td>
-                <td>/users/:id</td>
-                <td>PUT</td>
-                <td>
-                    <code>
-                        {
-                            "Username": "NewAlphanumeric,
-                            "Password": "hashedPassword",
-                            "Email": "Newemail@mail.com",
-                            "Birthday": "YYYY-MM-DD"
-                        }
-                    </code>
-                </td>
-                <td>
-                    <code>
-                        {
-                        _id: "66c8ef5565afdbe0a51488f0",
-                            "Username": "NewAlphanumeric,
-                            "Password": "hashedPassword",
-                            "Email": "Newemail@mail.com",
-                            "Birthday": "YYYY-MM-DD"
-                            "favoriteMovies": [],
-                        }
-                    </code>
-                </td>
-            </tr>
-            <tr>
-                <td>Allow users to add a movie to their list of favorites</td>
-                <td>/users/:id/:movieTitle</td>
-                <td>POST</td>
-                <td>None</td>
-                <td>
-                    <code>
-                        {
-                            "_id"66c8e06065afdbe0a51488e6"'
-                            "Username": "NewAlphanumeric"
-                            "FavoriteMovies": ["66c8e06065afdbe0a51488e6"]
-                        }
-                    </code>
-                </td>
-            </tr>
-            <tr>
-                <td>Allow users to remove a movie from their list of favorites</td>
-                <td>/users/:id/:movieTitle</td>
-                <td>DELETE</td>
-                <td>None</td>
-                <td>
-                    <code>
-                        {
-                            "_id"66c8e06065afdbe0a51488e6"'
-                            "Username": "NewAlphanumeric"
-                            "FavoriteMovies": []
-                        }
-                    </code>
-                </td>
-            </tr>
-            <tr>
-                <td>Allow existing users to deregister</td>
-                <td>/users/:id</td>
-                <td>DELETE</td>
-                <td>None</td>
-                <td>
-                    <code>
-                        {
-                            "message": "NewAlphanumeric has been deleted"
-                        }
-                    </code>
-                </td>
-            </tr>
-        </tbody>
+      <thead>
+        <tr>
+          <th>Business Logic</th>
+          <th>URL</th>
+          <th>HTTP Method</th>
+          <th>Request Body Data Format with Examples</th>
+          <th>Response Body Data Format with Examples</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Return a list of ALL movies to the user</td>
+          <td>/movies</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>
+            <code>
+              { "Title": "The Shawshank Redemption", "Description": "The
+              Shawshank Redemption is a 1994 American prison drama film...",
+              "Genre": { "Name": "Drama", "Description": "In film and
+              television, drama is a category or genre..." }, "Director": {
+              "Name": "Frank Darabont", "Bio": "Frank Árpád Darabont is an
+              American screenwriter, director, and producer...", "Birth":
+              "January 28, 1959" }, "ImageURL":
+              "https://en.wikipedia.org/wiki/File:ShawshankRedemptionMoviePoster.jpg",
+              "Featured": false }
+            </code>
+          </td>
+        </tr>
+        <tr>
+          <td>Return data about a single movie by title</td>
+          <td>/movies/:title</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>
+            <code>
+              { "Title": "Pulp Fiction", "Description": "Pulp Fiction is a 1994
+              American independent crime film...", "Genre": { "Name": "Crime
+              Film", "Description": "Crime films, in the broadest sense, is a
+              film genre..." }, "Director": { "Name": "Quentin Tarantino",
+              "Bio": "Quentin Jerome Tarantino is an American filmmaker and
+              actor...", "Birth": "March 27, 1963" }, "ImageURL":
+              "https://upload.wikimedia.org/wikipedia/en/3/3b/Pulp_Fiction_%281994%29_poster.jpg",
+              "Featured": false }
+            </code>
+          </td>
+        </tr>
+        <tr>
+          <td>Return data about a genre by name/title</td>
+          <td>/movies/genre/:genreName</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>
+            <code>
+              { "Name": "Drama", "Description": "In film and television, drama
+              is a category or genre..." }
+            </code>
+          </td>
+        </tr>
+        <tr>
+          <td>Return data about a director by name</td>
+          <td>/movies/director/:directorName</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>
+            <code>
+              { "Name": "Frank Darabont", "Bio": "Frank Árpád Darabont is an
+              American screenwriter, director, and producer...", "Birth":
+              "January 28, 1959" }
+            </code>
+          </td>
+        </tr>
+        <tr>
+          <td>Allow new users to register</td>
+          <td>/users</td>
+          <td>Post</td>
+          <td>
+            <code>
+              { "Username": "Alphanumericonly", "Password": "Password", "Email":
+              "email@mail.com", "Birthday": "YYYY-MM-DD" }
+            </code>
+          </td>
+          <td>
+            <code>
+              { _id: "66c8ef5565afdbe0a51488f0", "Username": "Alphanumericonly,
+              "Password": "hashedPassword", "Email": "emaile@mail.com",
+              "Birthday": "YYYY-MM-DD" "favoriteMovies": [], }
+            </code>
+          </td>
+        </tr>
+        <tr>
+          <td>Allow users to update their username</td>
+          <td>/users/:id</td>
+          <td>PUT</td>
+          <td>
+            <code>
+              { "Username": "NewAlphanumeric, "Password": "hashedPassword",
+              "Email": "Newemail@mail.com", "Birthday": "YYYY-MM-DD" }
+            </code>
+          </td>
+          <td>
+            <code>
+              { _id: "66c8ef5565afdbe0a51488f0", "Username": "NewAlphanumeric,
+              "Password": "hashedPassword", "Email": "Newemail@mail.com",
+              "Birthday": "YYYY-MM-DD" "favoriteMovies": [], }
+            </code>
+          </td>
+        </tr>
+        <tr>
+          <td>Allow users to add a movie to their list of favorites</td>
+          <td>/users/:id/:movieTitle</td>
+          <td>POST</td>
+          <td>None</td>
+          <td>
+            <code>
+              { "_id"66c8e06065afdbe0a51488e6"' "Username": "NewAlphanumeric"
+              "FavoriteMovies": ["66c8e06065afdbe0a51488e6"] }
+            </code>
+          </td>
+        </tr>
+        <tr>
+          <td>Allow users to remove a movie from their list of favorites</td>
+          <td>/users/:id/:movieTitle</td>
+          <td>DELETE</td>
+          <td>None</td>
+          <td>
+            <code>
+              { "_id"66c8e06065afdbe0a51488e6"' "Username": "NewAlphanumeric"
+              "FavoriteMovies": [] }
+            </code>
+          </td>
+        </tr>
+        <tr>
+          <td>Allow existing users to deregister</td>
+          <td>/users/:id</td>
+          <td>DELETE</td>
+          <td>None</td>
+          <td>
+            <code> { "message": "NewAlphanumeric has been deleted" } </code>
+          </td>
+        </tr>
+      </tbody>
     </table>
-</body>
-
+  </body>
 </html>

@@ -37,10 +37,17 @@ const allowedOrigins = [
 
 const corsOptions = {
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== "production") {
+    if (
+      !origin ||
+      allowedOrigins.includes(origin) ||
+      process.env.NODE_ENV !== "production"
+    ) {
       callback(null, true);
     } else {
-      callback(new Error(`CORS policy does not allow access from origin ${origin}`), false);
+      callback(
+        new Error(`CORS policy does not allow access from origin ${origin}`),
+        false,
+      );
     }
   },
   credentials: true,
@@ -75,7 +82,7 @@ app.get("/", (req, res) => {
  * @name POST /users
  * @summary Register a new user
  * @description Creates a new user account.
- * 
+ *
  * @example request body
  * {
  *   "Username": "jane_doe",
@@ -116,13 +123,17 @@ app.post(
   "/users",
   [
     check("Username", "Username is required").isLength({ min: 5 }),
-    check("Username", "Username contains non-alphanumeric characters - not allowed.").isAlphanumeric(),
+    check(
+      "Username",
+      "Username contains non-alphanumeric characters - not allowed.",
+    ).isAlphanumeric(),
     check("Password", "Password is required").not().isEmpty(),
     check("Email", "Email does not appear to be valid").isEmail(),
   ],
   async (req, res) => {
     let errors = validationResult(req);
-    if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() });
+    if (!errors.isEmpty())
+      return res.status(422).json({ errors: errors.array() });
 
     try {
       const hashedPassword = Users.hashPassword(req.body.Password);
@@ -141,25 +152,25 @@ app.post(
 
       res.status(201).json({
         message: "You have successfully registered!",
-        User: newUser
+        User: newUser,
       });
     } catch (error) {
       res.status(500).send("Error: " + error);
     }
-  }
+  },
 );
 
 /**
  * @name POST /login
  * @summary Login a user
  * @description Authenticates a user and returns a JWT token.
- * 
+ *
  * @example request body
  * {
  *   "Username": "jane_doe",
  *   "Password": "Password123!"
  * }
- * 
+ *
  * @example response - 200 - Success Response
  * {
  *   "user": {
@@ -173,23 +184,27 @@ app.post(
  * "Invalid username or password."
  */
 // Login route
-app.post("/login", passport.authenticate("local", { session: false }), (req, res) => {
-  const token = jwt.sign(
-    { Username: req.user.Username, _id: req.user._id },
-    process.env.JWT_SECRET || "your_jwt_secret",
-    { subject: req.user.Username, expiresIn: "7d", algorithm: "HS256" }
-  );
-  return res.json({ user: req.user, token: token });
-});
+app.post(
+  "/login",
+  passport.authenticate("local", { session: false }),
+  (req, res) => {
+    const token = jwt.sign(
+      { Username: req.user.Username, _id: req.user._id },
+      process.env.JWT_SECRET || "your_jwt_secret",
+      { subject: req.user.Username, expiresIn: "7d", algorithm: "HS256" },
+    );
+    return res.json({ user: req.user, token: token });
+  },
+);
 
 /**
  * @name POST /users/{Username}/movies/{MovieID}
  * @summary Add a movie to favorites
  * @description Adds a movie to the user's favorite movies list.
- * 
+ *
  * @example request URL
  * POST /users/jane_doe/movies/60f5b1c8c45e4c1b8c6f5678
- * 
+ *
  * @example response - 200 - Success Response
  * {
  *   "User": {
@@ -198,7 +213,7 @@ app.post("/login", passport.authenticate("local", { session: false }), (req, res
  *     "FavoriteMovies": ["60f5b1c8c45e4c1b8c6f5678"]
  *   }
  * }
- * 
+ *
  * @example response - 500 - Server Error
  * "Error: Something went wrong."
  */
@@ -210,23 +225,23 @@ app.post(
       const updatedUser = await Users.findOneAndUpdate(
         { Username: req.params.Username },
         { $push: { FavoriteMovies: req.params.MovieID } },
-        { new: true }
+        { new: true },
       );
       res.json(updatedUser);
     } catch (err) {
       res.status(500).send("Error: " + err);
     }
-  }
+  },
 );
 
 /**
  * @name DELETE /users/{Username}/movies/{MovieID}
  * @summary Remove a movie from favorites
  * @description Removes a movie from the user's favorite list.
- * 
+ *
  * @example request URL
  * DELETE /users/jane_doe/movies/60f5b1c8c45e4c1b8c6f5678
- * 
+ *
  * @example response - 200 - Success Response
  * {
  *   "User": {
@@ -235,7 +250,7 @@ app.post(
  *     "FavoriteMovies": []
  *   }
  * }
- * 
+ *
  * @example response - 500 - Server Error
  * "Error: Something went wrong."
  */
@@ -247,20 +262,20 @@ app.delete(
       const updatedUser = await Users.findOneAndUpdate(
         { Username: req.params.Username },
         { $pull: { FavoriteMovies: req.params.MovieID } },
-        { new: true }
+        { new: true },
       );
       res.json(updatedUser);
     } catch (err) {
       res.status(500).send("Error: " + err);
     }
-  }
+  },
 );
 
 /**
  * @name GET /movies
  * @summary Retrieve all movies
  * @description Returns a list of all movies.
- * 
+ *
  * @example response - 200 - Success Response
  * [
  *   {
@@ -273,18 +288,22 @@ app.delete(
  *     "Featured": true
  *   }
  * ]
- * 
+ *
  * @example response - 500 - Server Error
  * "Error: Something went wrong."
  */
-app.get("/movies", passport.authenticate("jwt", { session: false }), async (req, res) => {
-  try {
-    const movies = await Movies.find();
-    res.status(200).json(movies);
-  } catch (err) {
-    res.status(500).send("Error: " + err);
-  }
-});
+app.get(
+  "/movies",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const movies = await Movies.find();
+      res.status(200).json(movies);
+    } catch (err) {
+      res.status(500).send("Error: " + err);
+    }
+  },
+);
 
 // Users route
 app.get("/users", async (req, res) => {
@@ -300,14 +319,14 @@ app.get("/users", async (req, res) => {
  * @name PUT /users/{Username}
  * @summary Update user information
  * @description Updates the user's account information, including username, email, and birthday.
- * 
+ *
  * @example request body
  * {
  *   "Username": "jane_doe",
  *   "Email": "jane.doe@example.com",
  *   "Birthday": "1990-05-15T00:00:00.000Z"
  * }
- * 
+ *
  * @example response - 200 - Success Response
  * {
  *   "_id": "60f5b1c8c45e4c1b8c6f5678",
@@ -315,7 +334,7 @@ app.get("/users", async (req, res) => {
  *   "Email": "jane.doe@example.com",
  *   "Birthday": "1990-05-15T00:00:00.000Z"
  * }
- * 
+ *
  * @example response - 500 - Server Error
  * "Error: Something went wrong."
  */
@@ -331,10 +350,12 @@ app.put(
             Username: req.body.Username,
             Email: req.body.Email,
             Birthday: req.body.Birthday,
-            Password: req.body.Password ? Users.hashPassword(req.body.Password) : undefined,
+            Password: req.body.Password
+              ? Users.hashPassword(req.body.Password)
+              : undefined,
           },
         },
-        { new: true, omitUndefined: true }
+        { new: true, omitUndefined: true },
       );
 
       if (!updatedUser) {
@@ -346,20 +367,20 @@ app.put(
       console.error("Error updating user info:", error);
       res.status(500).send("Error updating profile: " + error);
     }
-  }
+  },
 );
 
 /**
  * @name DELETE /users/{Username}
  * @summary Delete a user
  * @description Deletes a user account.
- * 
+ *
  * @example response - 200 - Success Response
  * "jane_doe was deleted."
- * 
+ *
  * @example response - 404 - Not Found Error
  * "jane_doe was not found."
- * 
+ *
  * @example response - 500 - Server Error
  * "Error: Something went wrong."
  */
@@ -368,7 +389,9 @@ app.delete(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      const user = await Users.findOneAndDelete({ Username: req.params.Username });
+      const user = await Users.findOneAndDelete({
+        Username: req.params.Username,
+      });
       if (!user) {
         return res.status(404).send(`${req.params.Username} was not found`);
       }
@@ -376,7 +399,7 @@ app.delete(
     } catch (err) {
       res.status(500).send("Error: " + err);
     }
-  }
+  },
 );
 
 // Start the server

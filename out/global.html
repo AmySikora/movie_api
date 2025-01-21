@@ -1,246 +1,105 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <title>JSDoc: Global</title>
 
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
-</head>
-
-<body>
-
-<div id="main">
-
-    <h1 class="page-title">Global</h1>
-
-    
-
-
-
-
-<section>
-
-<header>
-    
-        <h2></h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id="DELETE/users/%7BUsername%7D"><span class="type-signature"></span>DELETE /users/{Username}<span class="type-signature"></span></h4>
-
-
-<p class="summary">Delete a user</p>
-
-
-
-<div class="description">
-    Deletes a user account.
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line352">line 352</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-    <h5>Examples</h5>
-    
-    <pre class="prettyprint"><code>response - 200 - Success Response
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="styles/prettify-tomorrow.css"
+    />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css" />
+  </head>
+
+  <body>
+    <div id="main">
+      <h1 class="page-title">Global</h1>
+
+      <section>
+        <header>
+          <h2></h2>
+        </header>
+
+        <article>
+          <div class="container-overview">
+            <dl class="details"></dl>
+          </div>
+
+          <h3 class="subsection-title">Members</h3>
+
+          <h4 class="name" id="DELETE/users/%7BUsername%7D">
+            <span class="type-signature"></span>DELETE /users/{Username}<span
+              class="type-signature"
+            ></span>
+          </h4>
+
+          <p class="summary">Delete a user</p>
+
+          <div class="description">Deletes a user account.</div>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="index.js.html">index.js</a>,
+                  <a href="index.js.html#line352">line 352</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h5>Examples</h5>
+
+          <pre class="prettyprint"><code>response - 200 - Success Response
 "jane_doe was deleted."</code></pre>
 
-    <pre class="prettyprint"><code>response - 404 - Not Found Error
+          <pre class="prettyprint"><code>response - 404 - Not Found Error
 "jane_doe was not found."</code></pre>
 
-    <pre class="prettyprint"><code>response - 500 - Server Error
+          <pre class="prettyprint"><code>response - 500 - Server Error
 "Error: Something went wrong."</code></pre>
 
+          <h4
+            class="name"
+            id="DELETE/users/%7BUsername%7D/movies/%7BMovieID%7D"
+          >
+            <span class="type-signature"></span>DELETE
+            /users/{Username}/movies/{MovieID}<span
+              class="type-signature"
+            ></span>
+          </h4>
 
+          <p class="summary">Remove a movie from favorites</p>
 
-        
-            
-<h4 class="name" id="DELETE/users/%7BUsername%7D/movies/%7BMovieID%7D"><span class="type-signature"></span>DELETE /users/{Username}/movies/{MovieID}<span class="type-signature"></span></h4>
+          <div class="description">
+            Removes a movie from the user's favorite list.
+          </div>
 
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="index.js.html">index.js</a>,
+                  <a href="index.js.html#line222">line 222</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
 
-<p class="summary">Remove a movie from favorites</p>
+          <h5>Examples</h5>
 
-
-
-<div class="description">
-    Removes a movie from the user's favorite list.
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line222">line 222</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-    <h5>Examples</h5>
-    
-    <pre class="prettyprint"><code>request URL
+          <pre class="prettyprint"><code>request URL
 DELETE /users/jane_doe/movies/60f5b1c8c45e4c1b8c6f5678</code></pre>
 
-    <pre class="prettyprint"><code>response - 200 - Success Response
+          <pre class="prettyprint"><code>response - 200 - Success Response
 {
   "User": {
     "_id": "5f8f8f8f8f8f8f8f8f8f8f8f",
@@ -249,141 +108,58 @@ DELETE /users/jane_doe/movies/60f5b1c8c45e4c1b8c6f5678</code></pre>
   }
 }</code></pre>
 
-    <pre class="prettyprint"><code>response - 500 - Server Error
+          <pre class="prettyprint"><code>response - 500 - Server Error
 "Error: Something went wrong."</code></pre>
 
-
-
-        
-            
-<h4 class="name" id="GET/"><span class="type-signature"></span>GET /<span class="type-signature"></span></h4>
-
-
-<p class="summary">Welcome message</p>
-
-
-
-<div class="description">
-    Returns a simple welcome message for the API.
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line65">line 65</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="GET/movies"><span class="type-signature"></span>GET /movies<span class="type-signature"></span></h4>
-
-
-<p class="summary">Retrieve all movies</p>
-
-
-
-<div class="description">
-    Returns a list of all movies.
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line259">line 259</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-    <h5>Examples</h5>
-    
-    <pre class="prettyprint"><code>response - 200 - Success Response
+          <h4 class="name" id="GET/">
+            <span class="type-signature"></span>GET /<span
+              class="type-signature"
+            ></span>
+          </h4>
+
+          <p class="summary">Welcome message</p>
+
+          <div class="description">
+            Returns a simple welcome message for the API.
+          </div>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="index.js.html">index.js</a>,
+                  <a href="index.js.html#line65">line 65</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="GET/movies">
+            <span class="type-signature"></span>GET /movies<span
+              class="type-signature"
+            ></span>
+          </h4>
+
+          <p class="summary">Retrieve all movies</p>
+
+          <div class="description">Returns a list of all movies.</div>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="index.js.html">index.js</a>,
+                  <a href="index.js.html#line259">line 259</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h5>Examples</h5>
+
+          <pre class="prettyprint"><code>response - 200 - Success Response
 [
   {
     "_id": "60f5b1c8c45e4c1b8c6f5678",
@@ -396,83 +172,42 @@ DELETE /users/jane_doe/movies/60f5b1c8c45e4c1b8c6f5678</code></pre>
   }
 ]</code></pre>
 
-    <pre class="prettyprint"><code>response - 500 - Server Error
+          <pre class="prettyprint"><code>response - 500 - Server Error
 "Error: Something went wrong."</code></pre>
 
+          <h4 class="name" id="POST/login">
+            <span class="type-signature"></span>POST /login<span
+              class="type-signature"
+            ></span>
+          </h4>
 
+          <p class="summary">Login a user</p>
 
-        
-            
-<h4 class="name" id="POST/login"><span class="type-signature"></span>POST /login<span class="type-signature"></span></h4>
+          <div class="description">
+            Authenticates a user and returns a JWT token.
+          </div>
 
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="index.js.html">index.js</a>,
+                  <a href="index.js.html#line152">line 152</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
 
-<p class="summary">Login a user</p>
+          <h5>Examples</h5>
 
-
-
-<div class="description">
-    Authenticates a user and returns a JWT token.
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line152">line 152</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-    <h5>Examples</h5>
-    
-    <pre class="prettyprint"><code>request body
+          <pre class="prettyprint"><code>request body
 {
   "Username": "jane_doe",
   "Password": "Password123!"
 }</code></pre>
 
-    <pre class="prettyprint"><code>response - 200 - Success Response
+          <pre class="prettyprint"><code>response - 200 - Success Response
 {
   "user": {
     "_id": "5f8f8f8f8f8f8f8f8f8f8f8f",
@@ -481,77 +216,34 @@ DELETE /users/jane_doe/movies/60f5b1c8c45e4c1b8c6f5678</code></pre>
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }</code></pre>
 
-    <pre class="prettyprint"><code>response - 401 - Authentication Error
+          <pre class="prettyprint"><code>response - 401 - Authentication Error
 "Invalid username or password."</code></pre>
 
+          <h4 class="name" id="POST/users">
+            <span class="type-signature"></span>POST /users<span
+              class="type-signature"
+            ></span>
+          </h4>
 
+          <p class="summary">Register a new user</p>
 
-        
-            
-<h4 class="name" id="POST/users"><span class="type-signature"></span>POST /users<span class="type-signature"></span></h4>
+          <div class="description">Creates a new user account.</div>
 
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="index.js.html">index.js</a>,
+                  <a href="index.js.html#line74">line 74</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
 
-<p class="summary">Register a new user</p>
+          <h5>Examples</h5>
 
-
-
-<div class="description">
-    Creates a new user account.
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line74">line 74</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-    <h5>Examples</h5>
-    
-    <pre class="prettyprint"><code>request body
+          <pre class="prettyprint"><code>request body
 {
   "Username": "jane_doe",
   "Password": "Password123!",
@@ -559,7 +251,7 @@ DELETE /users/jane_doe/movies/60f5b1c8c45e4c1b8c6f5678</code></pre>
   "Birthday": "1995-10-25T00:00:00.000Z"
 }</code></pre>
 
-    <pre class="prettyprint"><code>response - 201 - Success Response
+          <pre class="prettyprint"><code>response - 201 - Success Response
 {
   "message": "You have successfully registered!",
   "User": {
@@ -571,7 +263,9 @@ DELETE /users/jane_doe/movies/60f5b1c8c45e4c1b8c6f5678</code></pre>
   }
 }</code></pre>
 
-    <pre class="prettyprint"><code>response - 422 - Validation Error Response
+          <pre
+            class="prettyprint"
+          ><code>response - 422 - Validation Error Response
 {
   "errors": [
     { "Username": "Username is required" },
@@ -581,83 +275,43 @@ DELETE /users/jane_doe/movies/60f5b1c8c45e4c1b8c6f5678</code></pre>
   ]
 }</code></pre>
 
-    <pre class="prettyprint"><code>response - 400 - Username Exists Error
+          <pre class="prettyprint"><code>response - 400 - Username Exists Error
 "jane_doe already exists"</code></pre>
 
-    <pre class="prettyprint"><code>response - 500 - Server Error
+          <pre class="prettyprint"><code>response - 500 - Server Error
 "Error: Something went wrong."</code></pre>
 
+          <h4 class="name" id="POST/users/%7BUsername%7D/movies/%7BMovieID%7D">
+            <span class="type-signature"></span>POST
+            /users/{Username}/movies/{MovieID}<span
+              class="type-signature"
+            ></span>
+          </h4>
 
+          <p class="summary">Add a movie to favorites</p>
 
-        
-            
-<h4 class="name" id="POST/users/%7BUsername%7D/movies/%7BMovieID%7D"><span class="type-signature"></span>POST /users/{Username}/movies/{MovieID}<span class="type-signature"></span></h4>
+          <div class="description">
+            Adds a movie to the user's favorite movies list.
+          </div>
 
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="index.js.html">index.js</a>,
+                  <a href="index.js.html#line185">line 185</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
 
-<p class="summary">Add a movie to favorites</p>
+          <h5>Examples</h5>
 
-
-
-<div class="description">
-    Adds a movie to the user's favorite movies list.
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line185">line 185</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-    <h5>Examples</h5>
-    
-    <pre class="prettyprint"><code>request URL
+          <pre class="prettyprint"><code>request URL
 POST /users/jane_doe/movies/60f5b1c8c45e4c1b8c6f5678</code></pre>
 
-    <pre class="prettyprint"><code>response - 200 - Success Response
+          <pre class="prettyprint"><code>response - 200 - Success Response
 {
   "User": {
     "_id": "5f8f8f8f8f8f8f8f8f8f8f8f",
@@ -666,84 +320,44 @@ POST /users/jane_doe/movies/60f5b1c8c45e4c1b8c6f5678</code></pre>
   }
 }</code></pre>
 
-    <pre class="prettyprint"><code>response - 500 - Server Error
+          <pre class="prettyprint"><code>response - 500 - Server Error
 "Error: Something went wrong."</code></pre>
 
+          <h4 class="name" id="PUT/users/%7BUsername%7D">
+            <span class="type-signature"></span>PUT /users/{Username}<span
+              class="type-signature"
+            ></span>
+          </h4>
 
+          <p class="summary">Update user information</p>
 
-        
-            
-<h4 class="name" id="PUT/users/%7BUsername%7D"><span class="type-signature"></span>PUT /users/{Username}<span class="type-signature"></span></h4>
+          <div class="description">
+            Updates the user's account information, including username, email,
+            and birthday.
+          </div>
 
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="index.js.html">index.js</a>,
+                  <a href="index.js.html#line299">line 299</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
 
-<p class="summary">Update user information</p>
+          <h5>Examples</h5>
 
-
-
-<div class="description">
-    Updates the user's account information, including username, email, and birthday.
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line299">line 299</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-    <h5>Examples</h5>
-    
-    <pre class="prettyprint"><code>request body
+          <pre class="prettyprint"><code>request body
 {
   "Username": "jane_doe",
   "Email": "jane.doe@example.com",
   "Birthday": "1990-05-15T00:00:00.000Z"
 }</code></pre>
 
-    <pre class="prettyprint"><code>response - 200 - Success Response
+          <pre class="prettyprint"><code>response - 200 - Success Response
 {
   "_id": "60f5b1c8c45e4c1b8c6f5678",
   "Username": "jane_doe",
@@ -751,39 +365,56 @@ POST /users/jane_doe/movies/60f5b1c8c45e4c1b8c6f5678</code></pre>
   "Birthday": "1990-05-15T00:00:00.000Z"
 }</code></pre>
 
-    <pre class="prettyprint"><code>response - 500 - Server Error
+          <pre class="prettyprint"><code>response - 500 - Server Error
 "Error: Something went wrong."</code></pre>
+        </article>
+      </section>
+    </div>
 
+    <nav>
+      <h2><a href="index.html">Home</a></h2>
+      <h3>Global</h3>
+      <ul>
+        <li>
+          <a href="global.html#DELETE/users/%257BUsername%257D"
+            >DELETE /users/{Username}</a
+          >
+        </li>
+        <li>
+          <a
+            href="global.html#DELETE/users/%257BUsername%257D/movies/%257BMovieID%257D"
+            >DELETE /users/{Username}/movies/{MovieID}</a
+          >
+        </li>
+        <li><a href="global.html#GET/">GET /</a></li>
+        <li><a href="global.html#GET/movies">GET /movies</a></li>
+        <li><a href="global.html#POST/login">POST /login</a></li>
+        <li><a href="global.html#POST/users">POST /users</a></li>
+        <li>
+          <a
+            href="global.html#POST/users/%257BUsername%257D/movies/%257BMovieID%257D"
+            >POST /users/{Username}/movies/{MovieID}</a
+          >
+        </li>
+        <li>
+          <a href="global.html#PUT/users/%257BUsername%257D"
+            >PUT /users/{Username}</a
+          >
+        </li>
+      </ul>
+    </nav>
 
+    <br class="clear" />
 
-        
-    
+    <footer>
+      Documentation generated by
+      <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu Jan 16
+      2025 16:29:27 GMT-0800 (Pacific Standard Time)
+    </footer>
 
-    
-
-    
-
-    
-</article>
-
-</section>
-
-
-
-
-</div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#DELETE/users/%257BUsername%257D">DELETE /users/{Username}</a></li><li><a href="global.html#DELETE/users/%257BUsername%257D/movies/%257BMovieID%257D">DELETE /users/{Username}/movies/{MovieID}</a></li><li><a href="global.html#GET/">GET /</a></li><li><a href="global.html#GET/movies">GET /movies</a></li><li><a href="global.html#POST/login">POST /login</a></li><li><a href="global.html#POST/users">POST /users</a></li><li><a href="global.html#POST/users/%257BUsername%257D/movies/%257BMovieID%257D">POST /users/{Username}/movies/{MovieID}</a></li><li><a href="global.html#PUT/users/%257BUsername%257D">PUT /users/{Username}</a></li></ul>
-</nav>
-
-<br class="clear">
-
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu Jan 16 2025 16:29:27 GMT-0800 (Pacific Standard Time)
-</footer>
-
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
-</body>
+    <script>
+      prettyPrint();
+    </script>
+    <script src="scripts/linenumber.js"></script>
+  </body>
 </html>
