@@ -7,7 +7,8 @@ let Users = Models.User,
   JWTStrategy = passportJWT.Strategy,
   ExtractJWT = passportJWT.ExtractJwt;
 
-passport.use(
+  // Local strategy for username and password login
+  passport.use(
   new LocalStrategy(
     {
       usernameField: "Username",
@@ -40,6 +41,7 @@ passport.use(
   ),
 );
 
+// JWT strategy to authenticate users based on a valid token
 passport.use(
   new JWTStrategy(
     {
