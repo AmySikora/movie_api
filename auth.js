@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken"),
 
 require("./passport");
 
+// Generates a signed JWT token for the given user
 let generateJWTToken = (user) => {
   return jwt.sign(user, jwtSecret, {
     subject: user.Username,
