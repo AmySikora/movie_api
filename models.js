@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
+// Movie schema defines the structure for movie documents in MongoDB
 let movieSchema = mongoose.Schema({
   Title: { type: String, required: true },
-  Description: { type: String, required: true }, // Fixed typo from "require" to "required"
+  Description: { type: String, required: true }, 
   Genre: {
     Name: String,
     Description: String,
@@ -17,6 +18,7 @@ let movieSchema = mongoose.Schema({
   Featured: Boolean,
 });
 
+// User schema defines the structure for user documents in MongoDB
 let userSchema = mongoose.Schema({
   Username: { type: String, required: true },
   Password: { type: String, required: true },
@@ -30,7 +32,7 @@ userSchema.statics.hashPassword = (password) => {
   return bcrypt.hashSync(password, 10);
 };
 
-// Validate the password during login
+// Validates the password during login
 userSchema.methods.validatePassword = function (password) {
   return bcrypt.compareSync(password, this.Password);
 };
